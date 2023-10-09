@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  server:
+    build:
+      context: ~/projects/ProjectManager/Server/ProjectManager_Server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ProjectManager
+      POSTGRES_USER: toto
+      POSTGRES_PASSWORD: Toto123*
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    ports:
+      - "8090:8090"    
