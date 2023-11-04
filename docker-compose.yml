@@ -2,28 +2,49 @@ version: '3.3'
 
 services:
   server:
+    container_name: Server
+    image: projectmanagerserver
     build:
-      context: ~/projects/ProjectManager/Server/ProjectManager_Server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ProjectManager_Server/Dockerfile
+    expose:
+      - "5000"
     ports:
-      - "5000:80"
+      - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - database
-    volumes:
-      - .:/app
+    networks:
+      - internal
 
   database:
+    container_name: database
     image: postgres:latest
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ProjectManager
       POSTGRES_USER: toto
       POSTGRES_PASSWORD: Toto123*
     ports:
-      - "5432:5432"
+      - 5432:5432
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      - internal
 
   adminer:
+    container_name: adminer
     image: adminer
+    restart: unless-stopped
     ports:
-      - "8090:8090"    
+      - 8090:8080
+    networks:
+      - internal  
+
+networks:
+  internal:
+
+volumes:
+  adminer:
+  database:
