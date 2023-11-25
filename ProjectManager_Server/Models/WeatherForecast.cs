@@ -1,16 +1,19 @@
-using System; 
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager_Server.Models;
 
-public class WeatherForecast
+public class Bug
 {
-    public DateOnly Date { get; set; }
+    [Key]
+    public Guid Id {get;set;}
 
-    public int TemperatureC { get; set; }
+    public int DisplayId {get;set;}
 
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    [StringLength(255, MinimumLength =1, ErrorMessage ="Title must be between 1 and 255 char")]
+    public string Title {get;set;}
 
-#nullable enable
-    public string? Summary { get; set; }
-#nullable disable
+    public string Content {get;set;}
+
+    public DateTime Date { get; set; }
 }
