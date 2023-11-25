@@ -1,6 +1,6 @@
 using System; 
 
-namespace ProjectManager_Server;
+namespace ProjectManager_Server.Models;
 
 public class WeatherForecast
 {

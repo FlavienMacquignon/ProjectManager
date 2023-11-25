@@ -8,16 +8,23 @@ using Microsoft.OpenApi.Models;
 
 namespace ProjectManager_Server;
 
+/// <summary>
+/// Program entry Point
+/// </summary>
 public class Program
 {
+
+    /// <summary>
+    /// Maint Method
+    /// </summary>
+    /// <param name="args"></param>
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         AssemblyName currentAssem = Assembly.GetExecutingAssembly().GetName();
-        var name= currentAssem.Name;
+        var name = currentAssem.Name;
         var version = currentAssem.Version;
-        Console.Error.WriteLine("Name :: "+name +" Version :: "+version);
         // Add services to the container.
 
         builder.Services.AddControllers();

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProjectManager_Server.Models;
 
 namespace ProjectManager_Server.Controllers;
 
+/// <summary>
+/// Base example controller
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
