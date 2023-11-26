@@ -12,23 +12,29 @@ namespace ProjectManager_Server.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class BugController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
-    private readonly ILogger<WeatherForecastController> _logger;
+    /// <summary>
+    /// Contextual Logger
+    /// </summary>
+    private readonly ILogger<BugController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
-    }
+    /// <summary>
+    /// Bug Controller
+    /// </summary>
+    /// <param name="logger">Contextual Logger</param>
+    public BugController(ILogger<BugController> logger) => _logger = logger;
 
+
+    /// <summary>
+    /// Get One Bug
+    /// </summary>
+    /// <returns>An HTPP 200 containing a Bug object</returns>
     [HttpGet(Name = "GetOne")]
     public IActionResult Get()
     {
-      return Ok(new Bug());
+        _logger.LogDebug("GetOne Called");
+        return Ok(new Bug());
     }
 }
