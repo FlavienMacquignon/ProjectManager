@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ProjectManager_Server.Models;
 
 namespace ProjectManager_Server.Services
@@ -8,24 +9,25 @@ namespace ProjectManager_Server.Services
     /// </summary>
     public class ProjectManagerContext : DbContext
     {
-        /// <summary>
-        /// ctor
-        /// </summary>
-        public ProjectManagerContext() : base()
+        /// <inheritdoc/>
+        public ProjectManagerContext(DbContextOptions<ProjectManagerContext> options)
+        : base(options)
         {
+
         }
 
         /// <inheritdoc/>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
             // TODO Build connection string from appSettings.json
-            optionsBuilder.UseNpgsql("");
+           // var dbConfig = _config.Get<DataBaseConfig>();
+            optionsBuilder.UseNpgsql("Host=database; Database=ProjectManager; Username=toto;Password=Toto123*");
+            base.OnConfiguring(optionsBuilder);
         }
 
 
         /// <summary>
-        /// 
+        /// Bugs DBSet
         /// </summary>
         public DbSet<Bug> Bugs { get; set; }
     }
