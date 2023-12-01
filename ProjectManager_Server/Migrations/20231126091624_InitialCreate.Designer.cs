@@ -9,7 +9,7 @@ using ProjectManager_Server.Services;
 
 #nullable disable
 
-namespace ProjectManagerServer.Migrations
+namespace ProjectManager_Server.Migrations
 {
     [DbContext(typeof(ProjectManagerContext))]
     [Migration("20231126091624_InitialCreate")]
