@@ -1,29 +1,187 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
+using ProjectManager_Server.Manager;
+using ProjectManager_Server.Repository;
+using ProjectManager_Server.Services;
 
 namespace ProjectManager_Server;
 
+/// <summary>
+/// Program entry Point
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// Maint Method
+    /// </summary>
+    /// <param name="args"></param>
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        AssemblyName currentAssem = Assembly.GetExecutingAssembly().GetName();
-        var name= currentAssem.Name;
-        var version = currentAssem.Version;
-        Console.Error.WriteLine("Name :: "+name +" Version :: "+version);
         // Add services to the container.
+        if (builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
+            builder.Services.AddProblemDetails();
 
         builder.Services.AddControllers();
-
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c =>
+        builder.Services.InjectCleanArchitecture(builder.Configuration);
+
+        var app = builder.Build();
+
+        if (builder.Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint($"/swagger/{StartupInjection.GetAssembly().Version.ToString()}/swagger.json", "My API V1");
+                    c.RoutePrefix = "swagger";
+                }
+            );
+            app.UseDeveloperExceptionPage();
+        }
+
+        app.UseRouting();
+        // app.UseHttpsRedirection();
+
+        // app.UseAuthorization();
+        app.UseStaticFiles();
+
+        // TODO See how to get rid of that UseEndpoints 
+        app.UseEndpoints(endpoints =>
+                 {
+                     endpoints.MapControllers();
+                 });
+        app.Run();
+    }
+
+}
+
+/// <summary>
+/// Static class for DI Injection
+/// </summary>
+//TODO Document private functions
+public static class StartupInjection
+{
+
+    /// <summary>
+    /// Inject all elements necessary to a clean architecture  
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration">The IConfiguration of the application, can be used to configure swagger</param>
+    /// <returns>The IServiceCollection</returns>
+    public static IServiceCollection InjectCleanArchitecture(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        services.AddDatabaseContext();
+        services.AddSwaggerDoc();
+        services.AddRepository();
+        services.AddManagers();
+        services.AddServices();
+        services.AddHostedServices();
+        services.AddHealthChecks();
+        return services;
+    }
+
+    /// <summary>
+    /// Retrieve the current assembly for documentation purpose
+    /// </summary>
+    /// <returns>The running assembly</returns>
+    public static AssemblyName GetAssembly()
+    {
+        AssemblyName currentAssem = Assembly.GetExecutingAssembly().GetName();
+        return currentAssem;
+    }
+
+    /// <summary>
+    /// Add a Db Context Factory to the <see cref="IServiceCollection"/>
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
+    {
+        services.AddDbContextFactory<ProjectManagerContext>();
+        return services;
+    }
+
+    /// <summary>
+    /// Add Managers that handles Entity specific logic
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddManagers(this IServiceCollection services)
+    {
+        services.AddScoped<IBugManager, BugManager>();
+
+        return services;
+
+    }
+
+    /// <summary>
+    /// Add Repository that handles database abstractions
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddRepository(this IServiceCollection services)
+    {
+        services.AddScoped<IBugRepository, BugRepository>();
+        return services;
+
+    }
+
+    /// <summary>
+    /// Add a set of custom services
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        return services;
+
+    }
+
+    /// <summary>
+    /// Add a set of hosted services
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddHostedServices(this IServiceCollection services)
+    {
+        return services;
+
+    }
+
+    /// <summary>
+    /// Add a list of custom healtchecks endpoints to ensure disponibility of the app
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddHealthChecks(this IServiceCollection services)
+    {
+        return services;
+
+    }
+
+    /// <summary>
+    /// Add a swagger definition for this application 
+    /// </summary>
+    /// <param name="services">The collection of services</param>
+    /// <returns>The collection of Services for further chaining</returns>
+    private static IServiceCollection AddSwaggerDoc(this IServiceCollection services)
+    {
+        // TODO Extract some element of definition from appsettings
+        var currentAssem = GetAssembly();
+        var version = currentAssem.Version.ToString();
+        var name = currentAssem.Name;
+
+        services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc($"{version}", new OpenApiInfo
                 {
@@ -35,6 +193,8 @@ public class Program
                     {
                         Name = "Flavien Macquignon",
                         Email = "[email protected]",
+                        // TODO Use proper URI
+                        Url = new Uri("ee"),
                     },
                     License = new OpenApiLicense
                     {
@@ -44,31 +204,8 @@ public class Program
                 }
                 );
                 c.EnableAnnotations();
-                var xmlFilename = $"{name}.xml";
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{name}.xml"));
             });
-
-        var app = builder.Build();
-
-        app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint($"/swagger/{version}/swagger.json", "My API V1");
-            c.RoutePrefix = "swagger";            
-        }
-        );
-
-        app.UseRouting();
-        // app.UseHttpsRedirection();
-
-        // app.UseAuthorization();
-        app.UseStaticFiles();
-        app.UseDeveloperExceptionPage();
-        app.UseEndpoints(endpoints =>
-                 {
-                     endpoints.MapControllers();
-                 });
-        app.Run();
+        return services;
     }
 }
