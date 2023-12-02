@@ -33,22 +33,3 @@ public class BugManager : IBugManager
         return _repo.Add(entityToAdd);
     }
 }
-
-/// <summary>
-/// Interface for abstraction of the Bug Manager
-/// </summary>
-public interface IBugManager
-{
-    /// <summary>
-    /// Demo GetOne for demonstration
-    /// </summary>
-    /// <returns>A Bug object</returns>
-    public Bug GetOne();
-
-    /// <summary>
-    /// Demo to add new entity in database
-    /// </summary>
-    /// <param name="entityToAdd">the entity to add</param>
-    /// <returns>The added entity</returns>
-    public Bug Add(Bug entityToAdd);
-}

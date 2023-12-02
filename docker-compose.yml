@@ -1,5 +1,7 @@
 version: '3.3'
-
+# TODO Expose HTTPS 
+# TODO Rename component
+# TODO Create .env
 services:
   server:
     container_name: Server
