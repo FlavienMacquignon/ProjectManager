@@ -194,7 +194,7 @@ public static class StartupInjection
                         Name = "Flavien Macquignon",
                         Email = "[email protected]",
                         // TODO Use proper URI
-                        Url = new Uri("ee"),
+                        //Url = new Uri("ee"),
                     },
                     License = new OpenApiLicense
                     {
