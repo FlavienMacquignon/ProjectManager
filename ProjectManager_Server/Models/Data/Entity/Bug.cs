@@ -23,7 +23,7 @@ public class Bug
     /// Build a Bug from a BugContent View Model
     /// </summary>
     /// <param name="bc">A Bug Content View Model</param>
-    public Bug(BugContentViewModel bc)
+    public Bug(DescriptionContentViewModel bc)
     {
         Description = new Description
         {

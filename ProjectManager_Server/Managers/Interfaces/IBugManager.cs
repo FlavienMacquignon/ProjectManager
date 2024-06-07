@@ -13,12 +13,12 @@ public interface IBugManager
     /// Demo GetOne for demonstration
     /// </summary>
     /// <returns>A Bug object</returns>
-    public BugContentViewModel GetOne();
+    public DescriptionContentViewModel GetOne();
 
     /// <summary>
     /// Demo to add new entity in database
     /// </summary>
     /// <param name="entityToAdd">the entity to add</param>
     /// <returns>The added entity</returns>
-    public Bug Add(BugContentViewModel entityToAdd);
+    public Bug Add(DescriptionContentViewModel entityToAdd);
 }

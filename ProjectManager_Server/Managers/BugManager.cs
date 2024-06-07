@@ -24,14 +24,14 @@ public class BugManager : IBugManager
     }
 
     /// <inheritdoc/>
-    public BugContentViewModel GetOne()
+    public DescriptionContentViewModel GetOne()
     {
         var bug =_repo.GetOne();
-        return new BugContentViewModel(){Title=bug.Description.Title, Content=bug.Description.Content};
+        return new DescriptionContentViewModel(){Title=bug.Description.Title, Content=bug.Description.Content};
     }
 
     /// <inheritdoc/>
-    public Bug Add(BugContentViewModel entityToAdd){
+    public Bug Add(DescriptionContentViewModel entityToAdd){
         var bug = new Bug(entityToAdd);
         return _repo.Add(bug);
     }

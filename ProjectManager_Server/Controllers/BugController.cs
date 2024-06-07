@@ -52,7 +52,7 @@ public class BugController : ControllerBase
     /// <param name="entityToAdd">The object to add to the database</param>
     /// <returns>An HTPP 200 containing a Bug object</returns>
     [HttpPost(Name ="Insert")]
-    public IActionResult Add(BugContentViewModel entityToAdd){
+    public IActionResult Add(DescriptionContentViewModel entityToAdd){
         return Ok(_bugManager.Add(entityToAdd));
     }
 }

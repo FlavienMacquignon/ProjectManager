@@ -2,25 +2,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager_Server.Models.ViewModels;
 
-// TODO Document
 
 /// <summary>
-/// 
+///     Content of description
 /// </summary>
-/// <value></value>
-public record BugContentViewModel
+public record DescriptionContentViewModel
 {
     /// <summary>
-    /// 
+    /// Title
     /// </summary>
-    /// <value></value>
     [StringLength(255, MinimumLength = 1, ErrorMessage = "Title must be between 1 and 255 char")]
     public string Title { get; set; }
 
     /// <summary>
-    /// 
+    /// Content / Description
     /// </summary>
-    /// <value></value>
     public string Content { get; set; }
 
 }
