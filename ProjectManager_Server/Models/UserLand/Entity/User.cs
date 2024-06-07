@@ -52,4 +52,10 @@ public class User{
     /// </summary>
     [Column("team_id")]
     public Guid TeamId { get; set; }
+
+    /// <summary>
+    /// Team Entity
+    /// </summary>
+    [ForeignKey("TeamId")]
+    public Team Team { get; set; }
 }
