@@ -1,4 +1,5 @@
-using ProjectManager_Server.Models;
+using ProjectManager_Server.Models.Data.Entity;
+using ProjectManager_Server.Models.ViewModels;
 using ProjectManager_Server.Repository;
 
 namespace ProjectManager_Server.Manager;
@@ -23,13 +24,15 @@ public class BugManager : IBugManager
     }
 
     /// <inheritdoc/>
-    public Bug GetOne()
+    public BugContentViewModel GetOne()
     {
-        return _repo.GetOne();
+        var bug =_repo.GetOne();
+        return new BugContentViewModel(){Title=bug.Description.Title, Content=bug.Description.Content};
     }
 
     /// <inheritdoc/>
-    public Bug Add(Bug entityToAdd){
-        return _repo.Add(entityToAdd);
+    public Bug Add(BugContentViewModel entityToAdd){
+        var bug = new Bug(entityToAdd);
+        return _repo.Add(bug);
     }
 }

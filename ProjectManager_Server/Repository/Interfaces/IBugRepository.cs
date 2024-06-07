@@ -1,4 +1,4 @@
-using ProjectManager_Server.Models;
+using ProjectManager_Server.Models.Data.Entity;
 
 namespace ProjectManager_Server.Repository;
 

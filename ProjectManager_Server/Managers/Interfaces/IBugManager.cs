@@ -1,6 +1,8 @@
-using ProjectManager_Server.Models;
+using ProjectManager_Server.Models.Data.Entity;
+using ProjectManager_Server.Models.ViewModels;
 
 namespace ProjectManager_Server.Manager;
+
 
 /// <summary>
 /// Interface for abstraction of the Bug Manager
@@ -11,12 +13,12 @@ public interface IBugManager
     /// Demo GetOne for demonstration
     /// </summary>
     /// <returns>A Bug object</returns>
-    public Bug GetOne();
+    public BugContentViewModel GetOne();
 
     /// <summary>
     /// Demo to add new entity in database
     /// </summary>
     /// <param name="entityToAdd">the entity to add</param>
     /// <returns>The added entity</returns>
-    public Bug Add(Bug entityToAdd);
+    public Bug Add(BugContentViewModel entityToAdd);
 }

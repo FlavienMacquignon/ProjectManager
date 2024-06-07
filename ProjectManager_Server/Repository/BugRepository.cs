@@ -1,6 +1,6 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using ProjectManager_Server.Models;
+using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Services;
 
 namespace ProjectManager_Server.Repository;
@@ -35,7 +35,7 @@ public class BugRepository : IBugRepository
     /// <inheritdoc/>
     public Bug GetOne()
     {
-        return _db.Bugs.First();
+        return _db.Bugs.Include("Description").First();
     }
 
     /// <inheritdoc/>

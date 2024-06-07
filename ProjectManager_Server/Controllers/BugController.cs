@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectManager_Server.Manager;
 using ProjectManager_Server.Models;
+using ProjectManager_Server.Models.ViewModels;
 
 namespace ProjectManager_Server.Controllers;
 
@@ -41,8 +42,6 @@ public class BugController : ControllerBase
     [HttpGet(Name = "GetOne")]
     public IActionResult Get()
     {
-        // BUG This logger does not display anything
-        _logger.LogDebug("GetOne Called");
         return Ok(_bugManager.GetOne());
     }
 
@@ -53,7 +52,7 @@ public class BugController : ControllerBase
     /// <param name="entityToAdd">The object to add to the database</param>
     /// <returns>An HTPP 200 containing a Bug object</returns>
     [HttpPost(Name ="Insert")]
-    public IActionResult Add(Bug entityToAdd){
+    public IActionResult Add(BugContentViewModel entityToAdd){
         return Ok(_bugManager.Add(entityToAdd));
     }
 }
