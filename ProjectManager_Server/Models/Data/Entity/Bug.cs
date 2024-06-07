@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using ProjectManager_Server.Models.UserLand.Entity;
 using ProjectManager_Server.Models.ViewModels;
 
@@ -89,7 +88,9 @@ public class Bug
     /// Epic Entity
     /// </summary>
     [ForeignKey("EpicId")]
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public Epic? Epic { get; set; }
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     /// <summary>
     /// Foreign Key Reporter
