@@ -46,7 +46,7 @@ public class Epic
     /// <summary>
     /// Foreign Key Reporter
     /// </summary>
-    [Column("reported_id")]
+    [Column("reporter_id")]
     public Guid ReporterId { get; set; }
 
     /// <summary>

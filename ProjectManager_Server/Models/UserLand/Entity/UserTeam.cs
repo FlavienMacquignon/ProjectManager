@@ -2,13 +2,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace ProjectManager_Server.Models.UserLand.Entity;
 
 /// <summary>
-/// Team Entity
+/// Join entity between Users and Team
 /// </summary>
-public class Team
+public class UserTeam
 {
     /// <summary>
     /// Id
@@ -18,16 +17,14 @@ public class Team
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Team Name
+    /// User Id
     /// </summary>
-    [Required(AllowEmptyStrings = false)]
-    [Column("name")]
-    [StringLength(50, ErrorMessage = "Team Name cannot be longer than 50 char")]
-    public string Name { get; set; }="";
+    [Column("user_id")]
+    public Guid UserId { get; set;}
 
     /// <summary>
-    /// Default role for this team
+    /// Team Id
     /// </summary>
-    [Column("default_role")]
-    public Guid DefaultRole {get; set; }
+    [Column("team_id")]
+    public Guid TeamId { get; set;}
 }

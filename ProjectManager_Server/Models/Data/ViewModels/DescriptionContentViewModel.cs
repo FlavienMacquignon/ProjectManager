@@ -17,6 +17,6 @@ public record DescriptionContentViewModel
     /// <summary>
     /// Content / Description
     /// </summary>
-    public string Content { get; set; }
+    public string? Content { get; set; }
 
 }

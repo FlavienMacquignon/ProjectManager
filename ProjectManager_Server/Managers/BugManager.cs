@@ -1,3 +1,5 @@
+using System;
+using ProjectManager_Server.Exceptions;
 using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Models.ViewModels;
 using ProjectManager_Server.Repository;
@@ -24,10 +26,11 @@ public class BugManager : IBugManager
     }
 
     /// <inheritdoc/>
-    public DescriptionContentViewModel GetOne()
+    public DescriptionContentViewModel GetOne(Guid id)
     {
-        var bug =_repo.GetOne();
-        return new DescriptionContentViewModel(){Title=bug.Description.Title, Content=bug.Description.Content};
+        var bug =_repo.GetOne(id);
+        NotFoundException<Bug>.ThrowIfNull(bug);
+        return new DescriptionContentViewModel(){Title=bug!.Description.Title, Content=bug.Description.Content};
     }
 
     /// <inheritdoc/>

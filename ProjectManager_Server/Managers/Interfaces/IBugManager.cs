@@ -1,3 +1,4 @@
+using System;
 using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Models.ViewModels;
 
@@ -12,8 +13,9 @@ public interface IBugManager
     /// <summary>
     /// Demo GetOne for demonstration
     /// </summary>
+    /// <param name="id">The id to search for</param>
     /// <returns>A Bug object</returns>
-    public DescriptionContentViewModel GetOne();
+    public DescriptionContentViewModel GetOne(Guid id);
 
     /// <summary>
     /// Demo to add new entity in database

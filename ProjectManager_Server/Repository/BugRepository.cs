@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager_Server.Models.Data.Entity;
@@ -33,9 +34,9 @@ public class BugRepository : IBugRepository
     }
 
     /// <inheritdoc/>
-    public Bug GetOne()
+    public Bug? GetOne(Guid id)
     {
-        return _db.Bugs.Include("Description").First();
+        return _db.Bugs.Include("Description").FirstOrDefault(bug=> bug.Id == id);
     }
 
     /// <inheritdoc/>
@@ -52,6 +53,6 @@ public class BugRepository : IBugRepository
     /// </summary>
     ~BugRepository()
     {
-        _db = null;
+        _db = null!;
     }
 }
