@@ -1,6 +1,7 @@
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using ProjectManager_Server.Models;
+using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Services;
 
 namespace ProjectManager_Server.Repository;
@@ -33,18 +34,18 @@ public class BugRepository : IBugRepository
     }
 
     /// <inheritdoc/>
-    public Bug GetOne()
+    public Bug? GetOne(Guid id)
     {
-        return _db.Bugs.First();
+        return _db.Bugs.Include("Description").FirstOrDefault(bug=> bug.Id == id);
     }
 
     /// <inheritdoc/>
     public Bug Add(Bug entityToAdd){
        _db.Add(entityToAdd);
        int errorCode = _db.SaveChanges();
-       if(errorCode== 1) return entityToAdd;
-    
-        throw new System.Exception("Database issue");
+       // TODO Throw CustomException ??
+       if(errorCode== 0) throw new Exception("Database issue");
+        return entityToAdd;
     }
 
     /// <summary>
@@ -52,6 +53,6 @@ public class BugRepository : IBugRepository
     /// </summary>
     ~BugRepository()
     {
-        _db = null;
+        _db = null!;
     }
 }

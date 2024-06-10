@@ -56,10 +56,7 @@ public class Program
         app.UseStaticFiles();
 
         // TODO See how to get rid of that UseEndpoints 
-        app.UseEndpoints(endpoints =>
-                 {
-                     endpoints.MapControllers();
-                 });
+        app.UseEndpoints(endpoints => endpoints.MapControllers());
         app.Run();
     }
 
@@ -68,7 +65,6 @@ public class Program
 /// <summary>
 /// Static class for DI Injection
 /// </summary>
-//TODO Document private functions
 public static class StartupInjection
 {
 

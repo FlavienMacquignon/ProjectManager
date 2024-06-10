@@ -11,7 +11,9 @@ ProjectManager
 
 ### MANUAL
 
+### Architecture
 
+![Architecture diagram](Schema/Structure.svg "Architecture diagram")
 
 ### ROADMAP
     For now, the road map is the set of element present in the todo file [here](Backlog/TODO.md)
