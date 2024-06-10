@@ -30,6 +30,8 @@ public class Bug
             Title = bc.Title,
             Content = bc.Content
         };
+        ProjectId = bc.ProjectId;
+        ReporterId = bc.ReporterId;
     }
 
     /// <summary>
@@ -127,4 +129,17 @@ public class Bug
     /// </summary>
     [NotMapped]
     public bool IsCompleted => ClosedAt != null;
+
+    /// <summary>
+    ///     Create a <see cref="DescriptionContentViewModel"/> from this entity
+    /// </summary>
+    /// <returns>This bug as a DescriptionViewModel</returns>
+    public DescriptionContentViewModel ToDescriptionContentViewModel(){
+    
+        return new DescriptionContentViewModel(){
+            Title=Description.Title, 
+            Content=Description.Content, 
+            ProjectId = ProjectId, 
+            ReporterId = ReporterId};
+    }
 }

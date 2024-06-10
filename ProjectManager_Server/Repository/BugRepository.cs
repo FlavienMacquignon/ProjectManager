@@ -43,9 +43,9 @@ public class BugRepository : IBugRepository
     public Bug Add(Bug entityToAdd){
        _db.Add(entityToAdd);
        int errorCode = _db.SaveChanges();
-       if(errorCode== 1) return entityToAdd;
-    
-        throw new System.Exception("Database issue");
+       // TODO Throw CustomException ??
+       if(errorCode== 0) throw new Exception("Database issue");
+        return entityToAdd;
     }
 
     /// <summary>

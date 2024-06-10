@@ -30,12 +30,14 @@ public class BugManager : IBugManager
     {
         var bug =_repo.GetOne(id);
         NotFoundException<Bug>.ThrowIfNull(bug);
-        return new DescriptionContentViewModel(){Title=bug!.Description.Title, Content=bug.Description.Content};
+        return bug!.ToDescriptionContentViewModel();
     }
 
     /// <inheritdoc/>
-    public Bug Add(DescriptionContentViewModel entityToAdd){
+    public DescriptionContentViewModel Add(DescriptionContentViewModel entityToAdd)
+    {
         var bug = new Bug(entityToAdd);
-        return _repo.Add(bug);
+        var storedBug =  _repo.Add(bug);
+        return storedBug.ToDescriptionContentViewModel();
     }
 }

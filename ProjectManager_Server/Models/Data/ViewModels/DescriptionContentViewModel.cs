@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager_Server.Models.ViewModels;
@@ -19,4 +20,13 @@ public record DescriptionContentViewModel
     /// </summary>
     public string? Content { get; set; }
 
+    /// <summary>
+    /// Id of the project linked to this bug
+    /// </summary>
+    public Guid ProjectId {get;set;}
+
+    /// <summary>
+    /// Id of the user that reported this bug
+    /// </summary>
+    public Guid ReporterId { get; set; }
 }

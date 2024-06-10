@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectManager_Server.Exceptions;
 using ProjectManager_Server.Manager;
-using ProjectManager_Server.Models;
 using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Models.ViewModels;
 

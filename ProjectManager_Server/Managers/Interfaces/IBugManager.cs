@@ -22,5 +22,5 @@ public interface IBugManager
     /// </summary>
     /// <param name="entityToAdd">the entity to add</param>
     /// <returns>The added entity</returns>
-    public Bug Add(DescriptionContentViewModel entityToAdd);
+    public DescriptionContentViewModel Add(DescriptionContentViewModel entityToAdd);
 }
