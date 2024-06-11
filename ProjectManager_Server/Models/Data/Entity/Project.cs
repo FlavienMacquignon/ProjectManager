@@ -30,7 +30,7 @@ public class Project
     /// Description Object
     /// </summary>
     [ForeignKey("DescriptionId")]
-    public Description Description { get; set; }
+    public Description? Description { get; set; }
 
         /// <summary>
     /// Foreign Key Reporter
@@ -42,7 +42,7 @@ public class Project
     /// Reporter (User) Entity
     /// </summary>
     [ForeignKey("ReporterId")]
-    public User Reporter {get;set;}
+    public User? Reporter {get;set;}
 
     /// <summary>
     /// Foreign Key Assignated
@@ -54,11 +54,11 @@ public class Project
     /// Assignee (User) Entity
     /// </summary>
     [ForeignKey("AssignatedId")]
-    public User Assignee {get;set;}
+    public User? Assignee {get;set;}
 
     /// <summary>
     /// List of Epics for this Project
     /// </summary>
     [InverseProperty("Project")]
-    public List<Epic> Epics { get; set; } = new List<Epic>();
+    public List<Epic> Epics { get; set; } = new ();
 }

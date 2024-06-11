@@ -29,7 +29,7 @@ public class Epic
     /// Description Entity
     /// </summary>
     [ForeignKey("DescriptionId")]
-    public Description Description { get; set; }
+    public Description? Description { get; set; }
 
     /// <summary>
     /// Project to link the Epic to
@@ -41,7 +41,7 @@ public class Epic
     /// Project Entity
     /// </summary>
     [ForeignKey("ProjectId")]
-    public Project Project { get; set; }
+    public Project? Project { get; set; }
 
     /// <summary>
     /// Foreign Key Reporter
@@ -53,7 +53,7 @@ public class Epic
     /// Reporter (User) Entity
     /// </summary>
     [ForeignKey("ReporterId")]
-    public User Reporter { get; set; }
+    public User? Reporter { get; set; }
 
     /// <summary>
     /// Foreign Key Assignated
@@ -65,13 +65,13 @@ public class Epic
     /// Assignee (User) Entity
     /// </summary>
     [ForeignKey("AssignatedId")]
-    public User Assignee { get; set; }
+    public User? Assignee { get; set; }
 
     /// <summary>
     /// List of Bugs in the Epic
     /// </summary>
     [InverseProperty("Epic")]
-    public List<Bug> Bugs { get; set; }
+    public List<Bug> Bugs { get; set; }= new();
 
     /// <summary>
     /// Is the Epic completed ?? (AKA is there any bug incomplete???)

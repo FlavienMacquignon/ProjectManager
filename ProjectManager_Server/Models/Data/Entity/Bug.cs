@@ -58,7 +58,7 @@ public class Bug
     /// Description Object
     /// </summary>
     [ForeignKey("DescriptionId")]
-    public Description Description { get; set; }
+    public Description? Description { get; set; }
 
     /// <summary>
     /// Date time at witch the bug has been created
@@ -78,7 +78,7 @@ public class Bug
     /// </summary>
     [Required]
     [ForeignKey("ProjectId")]
-    public Project Project { get; set; }
+    public Project? Project { get; set; }
 
     /// <summary>
     /// Foreign Key Epic 
@@ -90,9 +90,7 @@ public class Bug
     /// Epic Entity
     /// </summary>
     [ForeignKey("EpicId")]
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public Epic? Epic { get; set; }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     /// <summary>
     /// Foreign Key Reporter
@@ -104,7 +102,7 @@ public class Bug
     /// Reporter (User) Entity
     /// </summary>
     [ForeignKey("ReporterId")]
-    public User Reporter {get;set;}
+    public User? Reporter {get;set;}
 
     /// <summary>
     /// Foreign Key Assignated
@@ -116,7 +114,7 @@ public class Bug
     /// Assignee (User) Entity
     /// </summary>
     [ForeignKey("AssignatedId")]
-    public User Assignee {get;set;}
+    public User? Assignee {get;set;}
 
     /// <summary>
     /// DateTime where Bug is closed
@@ -136,6 +134,7 @@ public class Bug
     /// <returns>This bug as a DescriptionViewModel</returns>
     public DescriptionContentViewModel ToDescriptionContentViewModel(){
     
+        ArgumentNullException.ThrowIfNull(Description);
         return new DescriptionContentViewModel(){
             Title=Description.Title, 
             Content=Description.Content, 

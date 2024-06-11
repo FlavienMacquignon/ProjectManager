@@ -57,5 +57,5 @@ public class User{
     /// Team Entity
     /// </summary>
     [ForeignKey("TeamId")]
-    public Team Team { get; set; }
+    public Team? Team { get; set; }
 }

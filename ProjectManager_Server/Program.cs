@@ -42,7 +42,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"/swagger/{StartupInjection.GetAssembly().Version.ToString()}/swagger.json", "My API V1");
+                    c.SwaggerEndpoint($"/swagger/{StartupInjection.GetAssembly().Version}/swagger.json", "My API V1");
                     c.RoutePrefix = "swagger";
                 }
             );
@@ -54,9 +54,9 @@ public class Program
 
         // app.UseAuthorization();
         app.UseStaticFiles();
-
-        // TODO See how to get rid of that UseEndpoints 
+        #pragma warning disable ASP0014
         app.UseEndpoints(endpoints => endpoints.MapControllers());
+        #pragma warning restore ASP0014
         app.Run();
     }
 
@@ -174,7 +174,7 @@ public static class StartupInjection
     {
         // TODO Extract some element of definition from appsettings
         var currentAssem = GetAssembly();
-        var version = currentAssem.Version.ToString();
+        var version = currentAssem.Version;
         var name = currentAssem.Name;
 
         services.AddSwaggerGen(c =>
