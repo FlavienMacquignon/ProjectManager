@@ -6,21 +6,21 @@ using ProjectManager_Server.Models.ViewModels;
 
 namespace ProjectManager_Server.Models.Data.Entity;
 
-
 /// <summary>
-/// Bug Entity
+///     Bug Entity
 /// </summary>
 [Table("bug", Schema = "data")]
 public class Bug
 {
+    /// <summary>
+    ///     Default ctor used by Entity Framework
+    /// </summary>
+    public Bug()
+    {
+    }
 
     /// <summary>
-    /// Default ctor used by Entity Framework
-    /// </summary> 
-    public Bug() { }
-
-    /// <summary>
-    /// Build a Bug from a BugContent View Model
+    ///     Build a Bug from a BugContent View Model
     /// </summary>
     /// <param name="bc">A Bug Content View Model</param>
     public Bug(DescriptionContentViewModel bc)
@@ -35,7 +35,7 @@ public class Bug
     }
 
     /// <summary>
-    /// Id of entity
+    ///     Id of entity
     /// </summary>
     [Key]
     [Column("id")]
@@ -55,90 +55,92 @@ public class Bug
     public Guid DescriptionId { get; set; }
 
     /// <summary>
-    /// Description Object
+    ///     Description Object
     /// </summary>
     [ForeignKey("DescriptionId")]
     public Description? Description { get; set; }
 
     /// <summary>
-    /// Date time at witch the bug has been created
+    ///     Date time at witch the bug has been created
     /// </summary>
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();
 
     /// <summary>
-    /// Foreign Key project
+    ///     Foreign Key project
     /// </summary>
     [Required]
     [Column("project_id")]
     public Guid ProjectId { get; set; }
 
     /// <summary>
-    /// Project entity
+    ///     Project entity
     /// </summary>
     [Required]
     [ForeignKey("ProjectId")]
     public Project? Project { get; set; }
 
     /// <summary>
-    /// Foreign Key Epic 
+    ///     Foreign Key Epic
     /// </summary>
     [Column("epic_id")]
     public Guid? EpicId { get; set; }
 
     /// <summary>
-    /// Epic Entity
+    ///     Epic Entity
     /// </summary>
     [ForeignKey("EpicId")]
     public Epic? Epic { get; set; }
 
     /// <summary>
-    /// Foreign Key Reporter
+    ///     Foreign Key Reporter
     /// </summary>
     [Column("reporter_id")]
     public Guid ReporterId { get; set; }
 
     /// <summary>
-    /// Reporter (User) Entity
+    ///     Reporter (User) Entity
     /// </summary>
     [ForeignKey("ReporterId")]
-    public User? Reporter {get;set;}
+    public User? Reporter { get; set; }
 
     /// <summary>
-    /// Foreign Key Assignated
+    ///     Foreign Key Assignated
     /// </summary>
     [Column("assignated_id")]
     public Guid? AssignatedId { get; set; }
 
     /// <summary>
-    /// Assignee (User) Entity
+    ///     Assignee (User) Entity
     /// </summary>
     [ForeignKey("AssignatedId")]
-    public User? Assignee {get;set;}
+    public User? Assignee { get; set; }
 
     /// <summary>
-    /// DateTime where Bug is closed
+    ///     DateTime where Bug is closed
     /// </summary>
     [Column("closed_at")]
     public DateTime? ClosedAt { get; set; }
 
     /// <summary>
-    /// Utility prop, is the bug closed ?
+    ///     Utility prop, is the bug closed ?
     /// </summary>
     [NotMapped]
     public bool IsCompleted => ClosedAt != null;
 
     /// <summary>
-    ///     Create a <see cref="DescriptionContentViewModel"/> from this entity
+    ///     Create a <see cref="DescriptionContentViewModel" /> from this entity
     /// </summary>
     /// <returns>This bug as a DescriptionViewModel</returns>
-    public DescriptionContentViewModel ToDescriptionContentViewModel(){
-    
+    public DescriptionContentViewModel ToDescriptionContentViewModel()
+    {
         ArgumentNullException.ThrowIfNull(Description);
-        return new DescriptionContentViewModel(){
-            Title=Description.Title, 
-            Content=Description.Content, 
-            ProjectId = ProjectId, 
-            ReporterId = ReporterId};
+        return new DescriptionContentViewModel
+        {
+            Title = Description.Title,
+            Content = Description.Content,
+            ProjectId = ProjectId,
+            ReporterId = ReporterId
+        };
     }
 }

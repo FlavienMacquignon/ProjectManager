@@ -5,26 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ProjectManager_Server.Models.UserLand.Entity;
 
 /// <summary>
-/// Join entity between Users and Roles
+///     Join entity between Users and Roles
 /// </summary>
 public class UserRoles
 {
     /// <summary>
-    /// Id
+    ///     Id
     /// </summary>
     [Key]
     [Column("id")]
     public Guid Id { get; set; }
 
     /// <summary>
-    /// User Id
+    ///     User Id
     /// </summary>
     [Column("user_id")]
-    public Guid UserId { get; set;}
+    public Guid UserId { get; set; }
 
     /// <summary>
-    /// Role Id
+    ///     Role Id
     /// </summary>
     [Column("role_id")]
-    public Guid RoleId { get; set;}
+    public Guid RoleId { get; set; }
 }

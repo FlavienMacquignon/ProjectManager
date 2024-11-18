@@ -10,25 +10,24 @@ using ProjectManager_Server.Models.ViewModels;
 namespace ProjectManager_Server.Controllers;
 
 /// <summary>
-/// Base Bug controller for primary objects
+///     Base Bug controller for primary objects
 /// </summary>
 [ApiController]
 [Route("/Bug")]
 public class BugController : ControllerBase
 {
+    /// <summary>
+    ///     IBugManager that handle logic
+    /// </summary>
+    private readonly IBugManager _bugManager;
 
     /// <summary>
-    /// Contextual Logger
+    ///     Contextual Logger
     /// </summary>
     private readonly ILogger<BugController> _logger;
 
     /// <summary>
-    /// IBugManager that handle logic
-    /// </summary>
-    private IBugManager _bugManager;
-
-    /// <summary>
-    /// Bug Controller ctor
+    ///     Bug Controller ctor
     /// </summary>
     /// <param name="logger">Contextual Logger</param>
     /// <param name="bugManager">IBugManager for Bug specific logic</param>
@@ -40,37 +39,58 @@ public class BugController : ControllerBase
 
 
     /// <summary>
-    /// Get One Bug for now only display the first Bug in the database, this demonstrate communication with BDD
+    ///     Get One Bug for now only display the first Bug in the database, this demonstrate communication with BDD
     /// </summary>
     /// <param name="id">The id of the bug to search for</param>
     /// <returns>An HTPP 200 containing a Bug object</returns>
-    [HttpGet(Name = "GetOne")]
-    [ProducesResponseType(typeof(DescriptionContentViewModel),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string),StatusCodes.Status404NotFound)]
+    [HttpGet(Name = "GetOneBug")]
+    [ProducesResponseType(typeof(DescriptionContentViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public IActionResult Get(Guid id)
     {
-        IActionResult ret;
+        IActionResult resp;
         try
         {
-            ret = Ok(_bugManager.GetOne(id));
+            resp = Ok(_bugManager.GetOne(id));
         }
-        catch (NotFoundException<Bug> ex)
+        catch (Exception e)
         {
-            _logger.LogError(ex.Message);
-            ret = NotFound(ex.Message);
+            var errorMessage = e.Message;
+            _logger.LogError("{Message}", errorMessage);
+            resp = e switch
+            {
+                NotFoundException<Bug> => NotFound(errorMessage),
+                _ => StatusCode(500, errorMessage)
+            };
         }
-        return ret;
+
+        return resp;
     }
 
 
     /// <summary>
-    /// Add a new bug in the database
+    ///     Add a new bug in the database
     /// </summary>
     /// <param name="entityToAdd">The object to add to the database</param>
     /// <returns>An HTPP 200 containing a Bug object</returns>
     [HttpPost(Name = "Insert")]
+    [ProducesResponseType(typeof(DescriptionContentViewModel), 200, "application/json")]
     public IActionResult Add(DescriptionContentViewModel entityToAdd)
     {
-        return Ok(_bugManager.Add(entityToAdd));
+        IActionResult resp;
+        try
+        {
+            resp = Ok(_bugManager.Add(entityToAdd));
+        }
+        catch (Exception e)
+        {
+            var errorMessage = e.Message;
+            _logger.LogError("{Message}", errorMessage);
+            resp = e switch
+            {
+                _ => StatusCode(500, errorMessage)
+            };
+        }
+        return resp;
     }
 }

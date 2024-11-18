@@ -2,30 +2,30 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace  ProjectManager_Server.Models.Data.Entity;
+namespace ProjectManager_Server.Models.Data.Entity;
 
 /// <summary>
-/// Description Table
+///     Description Table
 /// </summary>
 [Table("description", Schema = "data")]
 public class Description
 {
     /// <summary>
-    /// Id
+    ///     Id
     /// </summary>
     [Key]
     [Column("id")]
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Human Readable title
+    ///     Human Readable title
     /// </summary>
     [Required]
     [Column("title")]
     public required string Title { get; set; }
 
     /// <summary>
-    /// Description of bug
+    ///     Description of bug
     /// </summary>
     [Column("content")]
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.

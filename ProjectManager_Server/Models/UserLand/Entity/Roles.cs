@@ -2,23 +2,22 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace ProjectManager_Server.Models.UserLand.Entity;
 
 /// <summary>
-/// Role Entity
+///     Role Entity
 /// </summary>
 public class Roles
 {
     /// <summary>
-    /// Id
+    ///     Id
     /// </summary>
     [Key]
     [Column("id")]
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Name
+    ///     Name
     /// </summary>
     [Required(AllowEmptyStrings = false)]
     [Column("name")]
