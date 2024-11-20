@@ -1,23 +1,24 @@
 using System;
 using ProjectManager_Server.Exceptions;
+using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.Entity;
-using ProjectManager_Server.Models.ViewModels;
-using ProjectManager_Server.Repository;
+using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Repository.Interfaces;
 
-namespace ProjectManager_Server.Manager;
+namespace ProjectManager_Server.Managers;
 
 /// <summary>
-/// Bug Manager, handle Bug Specific logic
+///     Bug Manager, handle Bug Specific logic
 /// </summary>
 public class BugManager : IBugManager
 {
     /// <summary>
-    /// IBugRepository for database abstraction
+    ///     IBugRepository for database abstraction
     /// </summary>
-    private IBugRepository _repo;
+    private readonly IBugRepository _repo;
 
     /// <summary>
-    /// Bug Manager ctor
+    ///     Bug Manager ctor
     /// </summary>
     /// <param name="repo">IBugRepository for database abstraction</param>
     public BugManager(IBugRepository repo)
@@ -25,19 +26,19 @@ public class BugManager : IBugManager
         _repo = repo;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public DescriptionContentViewModel GetOne(Guid id)
     {
-        var bug =_repo.GetOne(id);
+        var bug = _repo.GetOne(id);
         NotFoundException<Bug>.ThrowIfNull(bug);
         return bug!.ToDescriptionContentViewModel();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public DescriptionContentViewModel Add(DescriptionContentViewModel entityToAdd)
     {
         var bug = new Bug(entityToAdd);
-        var storedBug =  _repo.Add(bug);
+        var storedBug = _repo.Add(bug);
         return storedBug.ToDescriptionContentViewModel();
     }
 }
