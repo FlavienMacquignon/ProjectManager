@@ -16,7 +16,7 @@ public interface IBugRepository
     public Bug? GetOne(Guid id);
 
     /// <summary>
-    ///     Add a brand new bug in database
+    ///     Add a brand-new bug in database
     /// </summary>
     /// <param name="entityToAdd">The entity to add</param>
     /// <returns>The added bug</returns>

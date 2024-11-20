@@ -17,13 +17,13 @@ public class EpicBug
     public Guid Id { get; set; }
 
     /// <summary>
-    ///     Id of Epic
+    ///     id of Epic
     /// </summary>
     [Column("epic_id")]
     public Guid EpicId { get; set; }
 
     /// <summary>
-    ///     Id of Bug
+    ///     id of Bug
     /// </summary>
     [Column("bug_id")]
     public Guid BugId { get; set; }

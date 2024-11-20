@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectManager_Server.Exceptions;
-using ProjectManager_Server.Manager;
+using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.Entity;
-using ProjectManager_Server.Models.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels;
 
 namespace ProjectManager_Server.Controllers;
 
@@ -91,6 +91,7 @@ public class BugController : ControllerBase
                 _ => StatusCode(500, errorMessage)
             };
         }
+
         return resp;
     }
 }

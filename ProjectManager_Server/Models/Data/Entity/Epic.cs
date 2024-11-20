@@ -9,7 +9,7 @@ using ProjectManager_Server.Models.UserLand.Entity;
 namespace ProjectManager_Server.Models.Data.Entity;
 
 /// <summary>
-///     Epic group bugs to represent a functionnality
+///     Epic group bugs to represent a functionality
 /// </summary>
 [Table("epic", Schema = "data")]
 public class Epic
@@ -73,6 +73,7 @@ public class Epic
     ///     List of Bugs in the Epic
     /// </summary>
     [InverseProperty("Epic")]
+    // ReSharper disable once CollectionNeverUpdated.Global
     public List<Bug> Bugs { get; set; } = new();
 
     /// <summary>
@@ -81,7 +82,11 @@ public class Epic
     [NotMapped]
     public bool IsComplete { get; set; }
 
-    internal EpicViewModel ToViewModel()
+    /// <summary>
+    ///     Convert this entity in ViewModel
+    /// </summary>
+    /// <returns>A representation of this entity</returns>
+    public EpicViewModel ToViewModel()
     {
         ArgumentNullException.ThrowIfNull(Description);
         return new EpicViewModel

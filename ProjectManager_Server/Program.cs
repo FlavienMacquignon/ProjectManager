@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using ProjectManager_Server.Manager;
 using ProjectManager_Server.Managers;
 using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Repository;

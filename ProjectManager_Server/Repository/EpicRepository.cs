@@ -5,9 +5,11 @@ using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Repository.Interfaces;
 using ProjectManager_Server.Services;
 
-// TODO DOC
 namespace ProjectManager_Server.Repository;
 
+/// <summary>
+///     Epic Repository
+/// </summary>
 public class EpicRepository : IEpicRepository
 {
     /// <summary>
@@ -16,24 +18,23 @@ public class EpicRepository : IEpicRepository
     public EpicRepository(IDbContextFactory<ProjectManagerContext> contextFactory)
     {
         ContextFactory = contextFactory;
-        _db = ContextFactory.CreateDbContext();
+        Db = ContextFactory.CreateDbContext();
     }
 
     /// <summary>
     ///     The constructed DB Context
     /// </summary>
-    /// <value></value>
-    private ProjectManagerContext _db { get; }
+    private ProjectManagerContext Db { get; }
 
     /// <summary>
     ///     The DB Context Factory
     /// </summary>
-    /// <value></value>
     private IDbContextFactory<ProjectManagerContext> ContextFactory { get; }
 
+    /// <inheritdoc cref="IEpicRepository.GetOneById" />
     public Epic? GetOneById(Guid id)
     {
-        return _db.Epics
+        return Db.Epics
             .Include("Description")
             .Include("Bugs")
             .Include("Bugs.Description")

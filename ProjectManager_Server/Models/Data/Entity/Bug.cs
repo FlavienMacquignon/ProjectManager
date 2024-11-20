@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ProjectManager_Server.Models.Data.ViewModels;
 using ProjectManager_Server.Models.UserLand.Entity;
-using ProjectManager_Server.Models.ViewModels;
 
 namespace ProjectManager_Server.Models.Data.Entity;
 
@@ -35,7 +35,7 @@ public class Bug
     }
 
     /// <summary>
-    ///     Id of entity
+    ///     id of entity
     /// </summary>
     [Key]
     [Column("id")]
@@ -49,7 +49,7 @@ public class Bug
     public int DisplayId { get; set; }
 
     /// <summary>
-    ///     Id of the attached description item for this bug
+    ///     id of the attached description item for this bug
     /// </summary>
     [Column("description_id")]
     public Guid DescriptionId { get; set; }

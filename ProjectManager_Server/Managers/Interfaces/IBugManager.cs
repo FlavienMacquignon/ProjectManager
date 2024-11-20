@@ -1,7 +1,7 @@
 using System;
-using ProjectManager_Server.Models.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels;
 
-namespace ProjectManager_Server.Manager;
+namespace ProjectManager_Server.Managers.Interfaces;
 
 /// <summary>
 ///     Interface for abstraction of the Bug Manager

@@ -19,31 +19,42 @@ public class EpicController : ControllerBase
     private readonly ILogger<EpicController> _logger;
 
     /// <summary>
+    ///     ctor
     /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="epicManager"></param>
+    /// <param name="logger">Custom Logger</param>
+    /// <param name="epicManager">Epic Manager</param>
     public EpicController(ILogger<EpicController> logger, IEpicManager epicManager)
     {
         _logger = logger;
         _epicManager = epicManager;
     }
 
+    /// <summary>
+    ///     Retrieve One Epic by its id
+    /// </summary>
+    /// <param name="id">id of the Epic to retrieve</param>
+    /// <returns>The found Epic, if any</returns>
     [HttpGet(Name = "GetOneEpic")]
     [ProducesResponseType(typeof(EpicViewModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public IActionResult Get(Guid id)
     {
-        IActionResult ret;
+        IActionResult resp;
         try
         {
-            ret = Ok(_epicManager.GetOneById(id));
+            resp = Ok(_epicManager.GetOneById(id));
         }
-        catch (NotFoundException<Epic> ex)
+        catch (Exception e)
         {
-            _logger.LogError(ex.Message);
-            ret = NotFound(ex.Message);
+            var errorMessage = e.Message;
+            _logger.LogError("{Message}", errorMessage);
+            resp = e switch
+            {
+                NotFoundException<Epic> => NotFound(errorMessage),
+                _ => StatusCode(500, errorMessage)
+            };
         }
 
-        return ret;
+        return resp;
     }
 }

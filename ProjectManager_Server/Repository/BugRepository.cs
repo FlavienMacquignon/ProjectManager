@@ -18,32 +18,30 @@ public class BugRepository : IBugRepository
     public BugRepository(IDbContextFactory<ProjectManagerContext> contextFactory)
     {
         ContextFactory = contextFactory;
-        _db = ContextFactory.CreateDbContext();
+        Db = ContextFactory.CreateDbContext();
     }
 
     /// <summary>
     ///     The constructed DB Context
     /// </summary>
-    /// <value></value>
-    private ProjectManagerContext _db { get; set; }
+    private ProjectManagerContext Db { get; set; }
 
     /// <summary>
     ///     The DB Context Factory
     /// </summary>
-    /// <value></value>
     private IDbContextFactory<ProjectManagerContext> ContextFactory { get; }
 
     /// <inheritdoc />
     public Bug? GetOne(Guid id)
     {
-        return _db.Bugs.Include("Description").FirstOrDefault(bug => bug.Id == id);
+        return Db.Bugs.Include("Description").FirstOrDefault(bug => bug.Id == id);
     }
 
     /// <inheritdoc />
     public Bug Add(Bug entityToAdd)
     {
-        _db.Add(entityToAdd);
-        var errorCode = _db.SaveChanges();
+        Db.Add(entityToAdd);
+        var errorCode = Db.SaveChanges();
         // TODO Throw CustomException ??
         if (errorCode == 0) throw new Exception("Database issue");
         return entityToAdd;
@@ -54,6 +52,6 @@ public class BugRepository : IBugRepository
     /// </summary>
     ~BugRepository()
     {
-        _db = null!;
+        Db = null!;
     }
 }

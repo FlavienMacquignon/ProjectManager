@@ -22,13 +22,13 @@ public class Description
     /// </summary>
     [Required]
     [Column("title")]
+    [StringLength(50)]
     public required string Title { get; set; }
 
     /// <summary>
     ///     Description of bug
     /// </summary>
     [Column("content")]
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    [StringLength(500)]
     public string? Content { get; set; }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 }

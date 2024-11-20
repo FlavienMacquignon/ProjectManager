@@ -7,20 +7,20 @@ using ProjectManager_Server.Models.UserLand.Entity;
 namespace ProjectManager_Server.Models.Data.Entity;
 
 /// <summary>
-///     Entity that contains all epics and bugs for a given developpement
+///     Entity that contains all epics and bugs for a given development
 /// </summary>
 [Table("project", Schema = "data")]
 public class Project
 {
     /// <summary>
-    ///     Id of the project
+    ///     id of the project
     /// </summary>
     [Key]
     [Column("id")]
     public Guid Id { get; set; }
 
     /// <summary>
-    ///     Id of description for this project
+    ///     id of description for this project
     /// </summary>
     [Column("description_id")]
     public Guid DescriptionId { get; set; }
@@ -59,5 +59,6 @@ public class Project
     ///     List of Epics for this Project
     /// </summary>
     [InverseProperty("Project")]
-    public List<Epic> Epics { get; set; } = new();
+    // ReSharper disable once CollectionNeverUpdated.Global
+    public List<Epic> Epics { get; set; } = [];
 }

@@ -9,7 +9,7 @@ using ProjectManager_Server.Repository.Interfaces;
 namespace ProjectManager_Server.Managers;
 
 /// <summary>
-///     
+///     Epic Manager
 /// </summary>
 public class EpicManager : IEpicManager
 {
@@ -17,10 +17,10 @@ public class EpicManager : IEpicManager
     private ILogger<EpicManager> _logger;
 
     /// <summary>
-    /// 
+    ///     ctor
     /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="epicRepository"></param>
+    /// <param name="logger">custom logger</param>
+    /// <param name="epicRepository">Epic Repository</param>
     public EpicManager(ILogger<EpicManager> logger, IEpicRepository epicRepository)
     {
         _logger = logger;

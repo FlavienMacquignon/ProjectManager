@@ -1,8 +1,8 @@
 using System;
 using ProjectManager_Server.Exceptions;
-using ProjectManager_Server.Manager;
+using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.Entity;
-using ProjectManager_Server.Models.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels;
 using ProjectManager_Server.Repository.Interfaces;
 
 namespace ProjectManager_Server.Managers;

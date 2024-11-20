@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProjectManager_Server.Models.ViewModels;
+namespace ProjectManager_Server.Models.Data.ViewModels;
 
 /// <summary>
 ///     Content of description
@@ -20,12 +20,12 @@ public record DescriptionContentViewModel
     public string? Content { get; set; }
 
     /// <summary>
-    ///     Id of the project linked to this bug
+    ///     id of the project linked to this bug
     /// </summary>
     public Guid ProjectId { get; set; }
 
     /// <summary>
-    ///     Id of the user that reported this bug
+    ///     id of the user that reported this bug
     /// </summary>
     public Guid ReporterId { get; set; }
 }
