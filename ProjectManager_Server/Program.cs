@@ -113,6 +113,8 @@ public static class StartupInjection
         services.AddScoped<IBugManager, BugManager>();
         services.AddScoped<IEpicManager, EpicManager>();
 
+        services.AddScoped<ISearchManager, SearchManager>();
+
         return services;
     }
 
@@ -125,6 +127,8 @@ public static class StartupInjection
     {
         services.AddScoped<IBugRepository, BugRepository>();
         services.AddScoped<IEpicRepository, EpicRepository>();
+
+        services.AddScoped<ISearchRepository, SearchRepository>();
 
         return services;
     }
@@ -166,7 +170,6 @@ public static class StartupInjection
     /// <returns>The collection of Services for further chaining</returns>
     private static IServiceCollection AddSwaggerDoc(this IServiceCollection services)
     {
-        // TODO Extract some element of definition from appsettings
         var currentAssem = GetAssembly();
         var version = currentAssem.Version;
         var name = currentAssem.Name;

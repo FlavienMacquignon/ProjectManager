@@ -12,7 +12,6 @@ namespace ProjectManager_Server.Controllers;
 /// <summary>
 ///     Base Bug controller for primary objects
 /// </summary>
-[ApiController]
 [Route("/Bug")]
 public class BugController : ControllerBase
 {
