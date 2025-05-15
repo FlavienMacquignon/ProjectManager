@@ -30,7 +30,6 @@ public class SearchController : ControllerBase
         _logger = logger;
     }
 
-
     /// <summary>
     ///     Search for Bugs or Epic using filter
     /// </summary>

@@ -20,12 +20,12 @@ public record DescriptionContentViewModel
     public string? Content { get; set; }
 
     /// <summary>
-    ///     id of the project linked to this bug
+    ///     Id of the project linked to this bug
     /// </summary>
     public Guid ProjectId { get; set; }
 
     /// <summary>
-    ///     id of the user that reported this bug
+    ///     Id of the user that reported this bug
     /// </summary>
     public Guid ReporterId { get; set; }
 }

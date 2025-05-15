@@ -22,26 +22,45 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
 {
     private readonly DbContext _context = context;
 
-    /// <inheritdoc cref="ISearchRepository.Filter"/>
+    /// <inheritdoc cref="ISearchRepository.Filter(FilterObject)"/>
     public List<Responses> Filter(FilterObject filters)
     {
         var result = SearchAsync(filters).Result;
-        var lst = result.Select<SearchResultDTO, Responses>(s => new Responses
-        {
-            Epics = new EpicViewModel
-            {
-                Title = s.EpicTitle,
-                Content = s.EpicContent,
-                BugsMinimalDescription = new Dictionary<Guid, string>
-                {
-                    {
-                        s.BugId ?? throw new Exception(), s.BugContent
-                    }
-                }
-            },
-            Bugs = null
-        });
+        var lst = SearchResultDTOsToResponses(result);
         return lst.ToList();
+    }
+
+    private static IEnumerable<Responses> SearchResultDTOsToResponses(IEnumerable<SearchResultDTO> searchResults)
+    {
+        return searchResults.Select<SearchResultDTO, Responses>(s =>
+        {
+            if(s.EpicId is not null)
+                return new Responses
+                {
+                    Epics = new EpicViewModel
+                    {
+                        Title = s.EpicTitle,
+                        Content = s.EpicContent,
+                        BugsMinimalDescription = new Dictionary<Guid, string>
+                        {
+                            {
+                                s.BugId ?? throw new Exception(), s.BugTitle
+                            }
+                        }
+                    },
+                    Bugs = null
+                };
+            return new Responses
+            {
+                Epics = null,
+                Bugs = new BugViewModel
+                {
+                    BugId = s.BugId ?? throw new InvalidOperationException(),
+                    Title = s.BugTitle,
+                    Content = s.BugContent
+                }
+            };
+        });
     }
 
     /// <summary>
@@ -92,8 +111,9 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
     private IQueryable<SearchResultDTO> GetSubSetSearchResultForProject(Guid projectId)
     {
         return
-            from epic in _context.Set<Epic>()
             from bug in _context.Set<Bug>()
+            join epic in _context.Set<Epic>() on bug.EpicId equals epic.Id into BugEpic
+            from epic in BugEpic.DefaultIfEmpty()
             where epic.ProjectId == projectId || bug.ProjectId == projectId
             select new SearchResultDTO
             {

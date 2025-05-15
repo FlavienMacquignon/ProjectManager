@@ -19,10 +19,8 @@ public record EpicViewModel
     /// </summary>
     public string? Content { get; init; }
 
-
     /// <summary>
     ///     Couple <see cref="Bug.Id" /> and <see cref="Description.Title" /> for this <see cref="Bug" />
     /// </summary>
-    // ReSharper disable once CollectionNeverQueried.Global
     public required Dictionary<Guid, string> BugsMinimalDescription { get; init; }
 }
