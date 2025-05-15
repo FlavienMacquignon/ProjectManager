@@ -1,3 +1,4 @@
+using ProjectManager_Server.Exceptions;
 using System.Collections.Generic;
 using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.ViewModels;
@@ -22,12 +23,13 @@ public class SearchManager : ISearchManager
         _repository = searchRepository;
     }
 
-    /// <inheritdoc />
-    public List<Responses>? Filter(FilterObject rules)
+    /// <inheritdoc cref="ISearchManager.Filter"/>
+    public List<Responses> Filter(FilterObject rules)
     {
         // TODO Validation ==> What can be active at the same time ? ==> To Test
-        return _repository.Filter(rules);
-        // TODO Transform Data into a set of Responses here
+        var responses = _repository.Filter(rules);
+        NotFoundException<List<Responses>>.ThrowIfNullOrEmpty(responses);
+        return responses;
     }
 }
 

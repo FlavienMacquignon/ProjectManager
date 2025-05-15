@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace ProjectManager_Server.Exceptions;
 
@@ -25,6 +26,18 @@ public class NotFoundException<T> : Exception where T : class
     public static void ThrowIfNull(T? entity, string? customMessage = null!)
     {
         if (entity != null) return;
+        customMessage ??= nameof(T) + " was not found.";
+        throw new NotFoundException<T>(customMessage);
+    }
+
+    /// <summary>
+    ///     Throw a not found exception if the provided param (must be a list) is null or an empty list
+    /// </summary>
+    /// <param name="entity">The entity to check nullability for</param>
+    /// <param name="customMessage">Override default message if provided</param>
+    public static void ThrowIfNullOrEmpty(T? entity, string? customMessage = null!)
+    {
+        if ( entity != null && typeof(IList).IsAssignableFrom(typeof(T)) && ( ( IList )entity ).Count != 0 ) return;
         customMessage ??= nameof(T) + " was not found.";
         throw new NotFoundException<T>(customMessage);
     }

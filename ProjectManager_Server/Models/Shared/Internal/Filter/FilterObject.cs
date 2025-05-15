@@ -1,12 +1,25 @@
 using System;
 using System.Collections.Generic;
-using ProjectManager_Server.Managers;
 
 namespace ProjectManager_Server.Models.Shared.Internal.Filter;
 
+/// <summary>
+///     An Object to provide filters on Bugs an Epics
+/// </summary>
 public record FilterObject
 {
-    public Guid projectId { get; set; }
-    public List<IGenericFilter>? epicFilters { get; set; }
-    public List<IGenericFilter>? bugFilters { get; set; }
+    /// <summary>
+    ///     The project to search into
+    /// </summary>
+    public Guid ProjectId { get; set; }
+    
+    /// <summary>
+    ///     List of filters to apply on Epics
+    /// </summary>
+    public List<GenericFilter>? EpicFilters { get; set; }
+    
+    /// <summary>
+    ///     List of filters to apply on Bugs
+    /// </summary>
+    public List<GenericFilter>? BugFilters { get; set; }
 }

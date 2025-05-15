@@ -36,7 +36,6 @@ public class BugController : ControllerBase
         _bugManager = bugManager;
     }
 
-
     /// <summary>
     ///     Get One Bug for now only display the first Bug in the database, this demonstrate communication with BDD
     /// </summary>
@@ -65,7 +64,6 @@ public class BugController : ControllerBase
 
         return resp;
     }
-
 
     /// <summary>
     ///     Add a new bug in the database

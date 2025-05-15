@@ -185,9 +185,8 @@ public static class StartupInjection
                     Contact = new OpenApiContact
                     {
                         Name = "Flavien Macquignon",
-                        Email = "[email protected]"
-                        // TODO Use proper URI
-                        //Url = new Uri("ee"),
+                        Email = "flavien.macquignon@fastmail.fr",
+                        Url = new Uri("https://flavienmacquignon.github.io/")
                     },
                     License = new OpenApiLicense
                     {
