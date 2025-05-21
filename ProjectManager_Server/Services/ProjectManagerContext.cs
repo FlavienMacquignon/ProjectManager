@@ -40,12 +40,6 @@ public class ProjectManagerContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
-    /// <inheritdoc />
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-    }
-
     #region DbSet
 
     /// <summary>

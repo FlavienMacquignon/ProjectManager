@@ -16,5 +16,5 @@ public interface ISearchManager
     /// <param name="rules">The set of rules </param>
     /// <returns>A list of responses if any is found</returns>
     /// <exception cref="NotFoundException{T}">If Responses is not found</exception>
-    List<Responses> Filter(FilterObject rules);
+    List<Responses> Search(FilterObject rules);
 }

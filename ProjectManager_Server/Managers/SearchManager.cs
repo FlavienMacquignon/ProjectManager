@@ -23,10 +23,9 @@ public class SearchManager : ISearchManager
         _repository = searchRepository;
     }
 
-    /// <inheritdoc cref="ISearchManager.Filter"/>
-    public List<Responses> Filter(FilterObject rules)
+    /// <inheritdoc cref="ISearchManager.Search"/>
+    public List<Responses> Search(FilterObject rules)
     {
-        // TODO Validation ==> What can be active at the same time ? ==> To Test
         var responses = _repository.Filter(rules);
         NotFoundException<List<Responses>>.ThrowIfNullOrEmpty(responses);
         return responses;

@@ -30,6 +30,13 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
         return lst.ToList();
     }
 
+    /// <summary>
+    ///     Transform a List of SearchResultDTO into a List of Responses
+    /// </summary>
+    /// <param name="searchResults">The list to transform</param>
+    /// <returns>The transformed list</returns>
+    /// <exception cref="Exception"></exception>
+    /// <exception cref="InvalidOperationException">If a bug without Id is returned</exception>
     private static IEnumerable<Responses> SearchResultDTOsToResponses(IEnumerable<SearchResultDTO> searchResults)
     {
         return searchResults.Select<SearchResultDTO, Responses>(s =>
@@ -39,7 +46,7 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
                 {
                     Epics = new EpicViewModel
                     {
-                        Title = s.EpicTitle,
+                        Title = s.EpicTitle ?? string.Empty,
                         Content = s.EpicContent,
                         BugsMinimalDescription = new Dictionary<Guid, string>
                         {
@@ -56,7 +63,7 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
                 Bugs = new BugViewModel
                 {
                     BugId = s.BugId ?? throw new InvalidOperationException(),
-                    Title = s.BugTitle,
+                    Title = s.BugTitle ?? string.Empty,
                     Content = s.BugContent
                 }
             };
@@ -87,7 +94,7 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
     /// </summary>
     /// <param name="rules">The set of rules tu use to search for this predicate</param>
     /// <returns>Return the list of predicates to apply</returns>
-    private static IEnumerable<Expression<Func<SearchResultDTO, bool>>> BuildPredicates(FilterObject rules)
+    private static List<Expression<Func<SearchResultDTO, bool>>> BuildPredicates(FilterObject rules)
     {
         const string epic = "Epic";
         const string bug = "Bug";
@@ -122,7 +129,8 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
                 EpicContent = epic.Description.Content,
                 BugId = bug.Id,
                 BugTitle = bug.Description.Title,
-                BugContent = bug.Description.Content
+                BugContent = bug.Description.Content,
+                BugCreatedAt = bug.CreatedAt
             };
     }
 }

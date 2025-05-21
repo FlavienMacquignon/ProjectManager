@@ -1,3 +1,5 @@
+using NUnit.Framework;
+
 namespace ProjectManager_Server.Tests;
 
 public class Tests

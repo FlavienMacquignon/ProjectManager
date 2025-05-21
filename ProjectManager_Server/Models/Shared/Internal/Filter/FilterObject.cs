@@ -1,3 +1,4 @@
+using ProjectManager_Server.Attribute;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,7 @@ public record FilterObject
     /// <summary>
     ///     List of filters to apply on Epics
     /// </summary>
+    [NumberOfNullAuthorized([nameof(BugFilters)],1,1)]
     public List<GenericFilter>? EpicFilters { get; set; }
     
     /// <summary>

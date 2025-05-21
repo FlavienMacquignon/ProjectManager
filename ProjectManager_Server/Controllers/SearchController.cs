@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectManager_Server.Exceptions;
+using ProjectManager_Server.Helpers;
 using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.ViewModels;
 using ProjectManager_Server.Models.Shared.Internal.Filter;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager_Server.Controllers;
 
@@ -31,20 +33,20 @@ public class SearchController : ControllerBase
     }
 
     /// <summary>
-    ///     Search for Bugs or Epic using filter
+    ///     Search for Epics or Bugs using filter
     /// </summary>
-    /// <param name="rules">The set of rules used to filter epics and bugs</param>
-    /// <returns>A Minimal representation of the results</returns>
-    [HttpPost(template: "filter", Name = "filter")]
+    /// <param name="rules">The set of rules used to filter Epics and Bugs</param>
+    /// <returns>A minimal representation of the results</returns>
+    [HttpPost(template: "search", Name = "Search")]
     [ProducesResponseType(typeof(List<Responses>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public IActionResult Filter([FromBody] FilterObject rules)
+    public IActionResult Search([FromBody] FilterObject rules)
     {
         IActionResult resp;
-
         try
         {
-            resp = Ok(_searchManager.Filter(rules));
+            ObjectValidatorHelper.Validate(rules);   
+            resp = Ok(_searchManager.Search(rules));
         }
         catch ( Exception e )
         {
@@ -53,7 +55,8 @@ public class SearchController : ControllerBase
             _logger.LogDebug("{Stack}", e.StackTrace);
             resp = e switch
             {
-                NotFoundException<Responses> => NotFound(errorMessage),
+                NotFoundException<List<Responses>> => NotFound(errorMessage),
+                ValidationException => BadRequest(),
                 _ => StatusCode(500, errorMessage)
             };
         }

@@ -1,3 +1,5 @@
+using ProjectManager_Server.Attribute;
+
 namespace ProjectManager_Server.Models.Shared.Internal.Filter;
 
 /// <summary>
@@ -13,7 +15,7 @@ public record GenericFilter
     /// <summary>
     ///     The query to compare the property against
     /// </summary>
-    public string Query { get; set; }
+    public required string Query { get; set; }
     
     /// <summary>
     ///     Should the result be negated (All results NOT Equals to the query) 
@@ -23,6 +25,7 @@ public record GenericFilter
     /// <summary>
     ///     Apply a string filter to the property
     /// </summary>
+    [NumberOfNullAuthorized([nameof(BooleanFilter), nameof(TimedFilter)],2,2)]
     public StringFilter? StringFilter { get; set; }
     
     /// <summary>

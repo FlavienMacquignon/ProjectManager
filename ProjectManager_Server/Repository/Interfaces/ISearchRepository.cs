@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ProjectManager_Server.Managers;
 using ProjectManager_Server.Models.Data.ViewModels;
 using ProjectManager_Server.Models.Shared.Internal.Filter;
 

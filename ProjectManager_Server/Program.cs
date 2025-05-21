@@ -72,14 +72,14 @@ public static class StartupInjection
     public static IServiceCollection InjectCleanArchitecture(this IServiceCollection services,
         ConfigurationManager configuration)
     {
-        services.AddDatabaseContext();
-        services.AddSwaggerDoc();
-        services.AddRepository();
-        services.AddManagers();
-        services.AddServices();
-        services.AddHostedServices();
-        services.AddHealthChecks();
-        return services;
+        return services
+            .AddDatabaseContext()
+            .AddSwaggerDoc()
+            .AddRepository()
+            .AddManagers()
+            .AddServices()
+            .AddHostedServices()
+            .AddHealthChecks();
     }
 
     /// <summary>

@@ -32,6 +32,6 @@ public class EpicManager : IEpicManager
     {
         var epic = _epicRepository.GetOneById(id);
         NotFoundException<Epic>.ThrowIfNull(epic);
-        return epic.ToViewModel();
+        return epic!.ToViewModel();
     }
 }

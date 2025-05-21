@@ -14,12 +14,14 @@ public record SearchResultDTO
     /// <summary>
     ///     Title of the returned Epic
     /// </summary>
-    public string EpicTitle { get; set; }
+    public string? EpicTitle { get; set; }
     /// <summary>
     ///     Content of the returned Epic
     /// </summary>
-    public string EpicContent { get; set; }
-
+    public string? EpicContent { get; set; }
+// TODO EpicCreatedAt
+    
+    
     /// <summary>
     ///     The id of the returned Bug
     /// </summary>
@@ -27,9 +29,14 @@ public record SearchResultDTO
     /// <summary>
     /// Title of the returned Bug
     /// </summary>
-    public string BugTitle { get; set; }
+    public string? BugTitle { get; set; }
     /// <summary>
     /// Title of the returned Bug
     /// </summary>
-    public string BugContent { get; set; }
+    public string? BugContent { get; set; }
+    
+    /// <summary>
+    /// DateTime of the creation of the Bug
+    /// </summary>
+    public DateTime BugCreatedAt { get; set; }
 }

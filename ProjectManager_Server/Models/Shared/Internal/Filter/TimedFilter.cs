@@ -1,3 +1,5 @@
+using ProjectManager_Server.Attribute;
+
 namespace ProjectManager_Server.Models.Shared.Internal.Filter;
 
 /// <summary>
@@ -8,6 +10,7 @@ public record TimedFilter
     /// <summary>
     ///     Does the results should be before the provided value in the <see cref ="GenericFilter.Query"/>
     /// </summary>
+    [NumberOfNullAuthorized([nameof(After)],1,1)]
     public bool? Before { get; set; }
     
     /// <summary>
