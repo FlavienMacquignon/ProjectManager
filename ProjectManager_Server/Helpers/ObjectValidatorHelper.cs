@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace ProjectManager_Server.Helpers;
 
@@ -28,7 +29,7 @@ public static class ObjectValidatorHelper
                 validateAllProperties: true
             );
             if ( !isValid )
-                throw new ValidationException(); // TODO Aggregate ValidationResults
+                throw new ValidationException(string.Join(System.Environment.NewLine, validationResults.Select(vr => vr.ErrorMessage)));
         }
     }
 }

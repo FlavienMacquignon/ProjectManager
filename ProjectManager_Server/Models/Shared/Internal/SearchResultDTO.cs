@@ -38,5 +38,5 @@ public record SearchResultDTO
     /// <summary>
     /// DateTime of the creation of the Bug
     /// </summary>
-    public DateTime BugCreatedAt { get; set; }
+    public DateTime? BugCreatedAt { get; set; }
 }

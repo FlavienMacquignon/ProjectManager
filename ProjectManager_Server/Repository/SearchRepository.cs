@@ -35,39 +35,49 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
     /// </summary>
     /// <param name="searchResults">The list to transform</param>
     /// <returns>The transformed list</returns>
-    /// <exception cref="Exception"></exception>
-    /// <exception cref="InvalidOperationException">If a bug without Id is returned</exception>
     private static IEnumerable<Responses> SearchResultDTOsToResponses(IEnumerable<SearchResultDTO> searchResults)
     {
-        return searchResults.Select<SearchResultDTO, Responses>(s =>
+        var dicEpVm = new Dictionary<Guid, EpicViewModel>();
+        var repLst = new List<Responses>();
+        foreach ( SearchResultDTO sr in searchResults )
         {
-            if(s.EpicId is not null)
-                return new Responses
-                {
-                    Epics = new EpicViewModel
-                    {
-                        Title = s.EpicTitle ?? string.Empty,
-                        Content = s.EpicContent,
-                        BugsMinimalDescription = new Dictionary<Guid, string>
-                        {
-                            {
-                                s.BugId ?? throw new Exception(), s.BugTitle
-                            }
-                        }
-                    },
-                    Bugs = null
-                };
-            return new Responses
+            if ( sr.EpicId is not null )
             {
-                Epics = null,
-                Bugs = new BugViewModel
+                if ( !dicEpVm.ContainsKey(( Guid )sr.EpicId) )
                 {
-                    BugId = s.BugId ?? throw new InvalidOperationException(),
-                    Title = s.BugTitle ?? string.Empty,
-                    Content = s.BugContent
+                    dicEpVm.Add(( Guid )sr.EpicId, new EpicViewModel
+                    {
+                        Title = sr.EpicTitle ?? string.Empty, 
+                        Content = sr.EpicContent,
+                        BugsMinimalDescription = new Dictionary<Guid, string>()
+                    });
+                    if ( sr.BugId is not null )
+                        dicEpVm[( Guid )sr.EpicId].BugsMinimalDescription?.Add(( Guid )sr.BugId!, sr.BugTitle ?? string.Empty);
                 }
-            };
-        });
+                else
+                    dicEpVm[( Guid )sr.EpicId].BugsMinimalDescription?.Add(( Guid )sr.BugId!, sr.BugTitle ?? string.Empty);
+
+                if ( dicEpVm[( Guid )sr.EpicId].BugsMinimalDescription != null && dicEpVm[( Guid )sr.EpicId].BugsMinimalDescription?.Count == 0 )
+                    dicEpVm[( Guid )sr.EpicId].BugsMinimalDescription = null;
+            }
+            else if ( sr.BugId is not null && sr.EpicId is null ) 
+                repLst.Add(new Responses
+                {
+                    Bugs = new BugViewModel
+                    {
+                        BugId = ( Guid )sr.BugId, 
+                        Title = sr.BugTitle ?? string.Empty, 
+                        Content = sr.BugContent
+                    }
+                });
+        }
+
+        repLst.AddRange(dicEpVm.Select(ep => new Responses
+        {
+            Epics = ep.Value
+        }));
+
+        return repLst;
     }
 
     /// <summary>
@@ -106,7 +116,7 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
         if ( rules.BugFilters != null )
             foreach ( var bugFilter in rules.BugFilters )
                 predicates.AddPredicateFromFilter(bugFilter, bug);
-        
+
         return predicates;
     }
 
@@ -118,9 +128,9 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
     private IQueryable<SearchResultDTO> GetSubSetSearchResultForProject(Guid projectId)
     {
         return
-            from bug in _context.Set<Bug>()
-            join epic in _context.Set<Epic>() on bug.EpicId equals epic.Id into BugEpic
-            from epic in BugEpic.DefaultIfEmpty()
+            from epic in _context.Set<Epic>()
+            join bug in _context.Set<Bug>() on epic.Id equals bug.EpicId into EpicBug
+            from bug in EpicBug.DefaultIfEmpty()
             where epic.ProjectId == projectId || bug.ProjectId == projectId
             select new SearchResultDTO
             {

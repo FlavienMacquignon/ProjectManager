@@ -14,7 +14,7 @@ public static class StringExtension
     /// <param name="dt">The DateTime Provided</param>
     /// <param name="format">The format used to parse the input</param>
     /// <returns>A DateTime</returns>
-    public static DateTime ToUniversalDateTime(this string dt, string format = "yyyyMMdd")
+    public static DateTime? ToUniversalDateTime(this string dt, string format = "yyyyMMdd")
     {
         return DateTime.ParseExact(dt, format, CultureInfo.InvariantCulture).ToUniversalTime();
     }

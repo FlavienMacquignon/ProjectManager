@@ -22,5 +22,5 @@ public record EpicViewModel
     /// <summary>
     ///     Couple <see cref="Bug.Id" /> and <see cref="Description.Title" /> for this <see cref="Bug" />
     /// </summary>
-    public required Dictionary<Guid, string> BugsMinimalDescription { get; init; }
+    public required Dictionary<Guid, string>? BugsMinimalDescription { get; set; }
 }
