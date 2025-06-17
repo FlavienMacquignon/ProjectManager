@@ -19,9 +19,12 @@ public record SearchResultDTO
     ///     Content of the returned Epic
     /// </summary>
     public string? EpicContent { get; set; }
-// TODO EpicCreatedAt
     
-    
+    /// <summary>
+    /// DateTime of the creation of the Epic
+    /// </summary>
+    public DateTime? EpicCreatedAt { get; set; }
+
     /// <summary>
     ///     The id of the returned Bug
     /// </summary>

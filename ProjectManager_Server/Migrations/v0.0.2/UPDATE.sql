@@ -4,6 +4,9 @@ ALTER TABLE data.bug ADD COLUMN IF NOT EXISTS description_id uuid ;
 ALTER TABLE data.epic ADD COLUMN IF NOT EXISTS description_id uuid ;
 ALTER TABLE data.project ADD COLUMN IF NOT EXISTS description_id uuid ;
 
+ALTER TABLE data.epic ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT now();
+ALTER TABLE data.project ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT now();
+
 
 ALTER TABLE data.bug
     ADD CONSTRAINT fk_bug_description FOREIGN KEY (description_id) REFERENCES data.description (id);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.Search;
 using ProjectManager_Server.Models.Shared.Internal;
 using ProjectManager_Server.Models.Shared.Internal.Filter;
 using ProjectManager_Server.Repository.Extensions;
@@ -22,11 +23,11 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
 {
     private readonly DbContext _context = context;
 
-    /// <inheritdoc cref="ISearchRepository.Filter(FilterObject)"/>
-    public List<Responses> Filter(FilterObject filters)
+    /// <inheritdoc cref="ISearchRepository.Search"/>
+    public List<Responses> Search(FilterObject filters)
     {
         var result = SearchAsync(filters).Result;
-        var lst = SearchResultDTOsToResponses(result);
+        var lst = SearchResultDtosToResponses(result);
         return lst.ToList();
     }
 
@@ -35,9 +36,9 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
     /// </summary>
     /// <param name="searchResults">The list to transform</param>
     /// <returns>The transformed list</returns>
-    private static IEnumerable<Responses> SearchResultDTOsToResponses(IEnumerable<SearchResultDTO> searchResults)
+    private static IEnumerable<Responses> SearchResultDtosToResponses(IEnumerable<SearchResultDTO> searchResults)
     {
-        var dicEpVm = new Dictionary<Guid, EpicViewModel>();
+        var dicEpVm = new Dictionary<Guid, SearchEpicViewModel>();
         var repLst = new List<Responses>();
         foreach ( SearchResultDTO sr in searchResults )
         {
@@ -45,7 +46,7 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
             {
                 if ( !dicEpVm.ContainsKey(( Guid )sr.EpicId) )
                 {
-                    dicEpVm.Add(( Guid )sr.EpicId, new EpicViewModel
+                    dicEpVm.Add(( Guid )sr.EpicId, new SearchEpicViewModel
                     {
                         Title = sr.EpicTitle ?? string.Empty, 
                         Content = sr.EpicContent,
@@ -137,6 +138,7 @@ public class SearchRepository(ProjectManagerContext context) : ISearchRepository
                 EpicId = epic.Id,
                 EpicTitle = epic.Description.Title,
                 EpicContent = epic.Description.Content,
+                EpicCreatedAt = epic.CreatedAt,
                 BugId = bug.Id,
                 BugTitle = bug.Description.Title,
                 BugContent = bug.Description.Content,

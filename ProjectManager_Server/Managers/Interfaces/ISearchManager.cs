@@ -1,6 +1,6 @@
 using ProjectManager_Server.Exceptions;
 using System.Collections.Generic;
-using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.Search;
 using ProjectManager_Server.Models.Shared.Internal.Filter;
 
 namespace ProjectManager_Server.Managers.Interfaces;

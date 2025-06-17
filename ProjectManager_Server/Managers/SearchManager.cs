@@ -1,7 +1,7 @@
 using ProjectManager_Server.Exceptions;
 using System.Collections.Generic;
 using ProjectManager_Server.Managers.Interfaces;
-using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.Search;
 using ProjectManager_Server.Models.Shared.Internal.Filter;
 using ProjectManager_Server.Repository.Interfaces;
 
@@ -26,7 +26,7 @@ public class SearchManager : ISearchManager
     /// <inheritdoc cref="ISearchManager.Search"/>
     public List<Responses> Search(FilterObject rules)
     {
-        var responses = _repository.Filter(rules);
+        var responses = _repository.Search(rules);
         NotFoundException<List<Responses>>.ThrowIfNullOrEmpty(responses);
         return responses;
     }

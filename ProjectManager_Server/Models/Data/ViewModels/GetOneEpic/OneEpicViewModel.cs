@@ -1,13 +1,13 @@
+using ProjectManager_Server.Models.Data.Entity;
 using System;
 using System.Collections.Generic;
-using ProjectManager_Server.Models.Data.Entity;
 
-namespace ProjectManager_Server.Models.Data.ViewModels;
+namespace ProjectManager_Server.Models.Data.ViewModels.GetOneEpic;
 
 /// <summary>
 ///     An Epic with its representation and associated <see cref="Bug" /> (only title is displayed)
 /// </summary>
-public record EpicViewModel
+public record OneEpicViewModel
 {
     /// <summary>
     ///     Epic Title

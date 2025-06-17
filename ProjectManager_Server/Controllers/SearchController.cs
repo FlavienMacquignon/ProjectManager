@@ -6,8 +6,9 @@ using Microsoft.Extensions.Logging;
 using ProjectManager_Server.Exceptions;
 using ProjectManager_Server.Helpers;
 using ProjectManager_Server.Managers.Interfaces;
-using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.Search;
 using ProjectManager_Server.Models.Shared.Internal.Filter;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager_Server.Controllers;
@@ -38,8 +39,9 @@ public class SearchController : ControllerBase
     /// <param name="rules">The set of rules used to filter Epics and Bugs</param>
     /// <returns>A minimal representation of the results</returns>
     [HttpPost(template: "search", Name = "Search")]
-    [ProducesResponseType(typeof(List<Responses>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [SwaggerResponse(StatusCodes.Status200OK, "Result of Search", typeof(List<Responses>))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "If no element match the query", typeof(string))]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unrecoverable Error occurs", typeof(string))]
     public IActionResult Search([FromBody] FilterObject rules)
     {
         IActionResult resp;

@@ -8,7 +8,7 @@ using ProjectManager_Server.Models.Shared.Internal.Filter;
 namespace ProjectManager_Server.Repository.Extensions;
 
 /// <summary>
-///     Extension to build Custom Expression Tree to search in the Database for Epic/Bug Description 
+///     Extension to build Custom Expression Tree, used to search in the Database for Epic/Bug Description 
 /// </summary>
 public static class SearchResultRepositoryExtension
 {
@@ -66,7 +66,7 @@ public static class SearchResultRepositoryExtension
         string query, TimedFilter timedFilter, bool negated)
     {
         var propertyExpression = Expression.Property(Parameter, dateTimeProperty);
-        var constant = Expression.Constant(query.ToUniversalDateTime());
+        var constant = Expression.Constant(query.ToUniversalDateTime(), typeof(DateTime?));
         Expression? comparison;
 
         if ( timedFilter.Before == true )
