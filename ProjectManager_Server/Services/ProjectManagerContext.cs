@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -27,21 +28,16 @@ public class ProjectManagerContext : DbContext
     {
         var dbConfig = _config.GetValue<string>("dbConfig");
         var env = _config.GetValue<string>("ASPNETCORE_ENVIRONMENT");
-        if (env == "Development")
+        optionsBuilder.UseNpgsql(dbConfig, optB => optB.MigrationsHistoryTable("history", "migration"));
+        if ( env == "Development" )
         {
             _logger.LogDebug("env is dev, gonna enable DataLogging");
-            optionsBuilder.EnableSensitiveDataLogging().EnableDetailedErrors();
+            optionsBuilder.LogTo(Console.WriteLine, (id, level) => id == Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuted && level >= LogLevel.Debug)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
         }
-
-        //
-        optionsBuilder.UseNpgsql(dbConfig, optB => optB.MigrationsHistoryTable("history", "migration"));
+        
         base.OnConfiguring(optionsBuilder);
-    }
-
-    /// <inheritdoc />
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
     }
 
     #region DbSet

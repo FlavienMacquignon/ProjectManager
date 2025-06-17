@@ -54,6 +54,12 @@ public class Project
     /// </summary>
     [ForeignKey("AssignatedId")]
     public User? Assignee { get; set; }
+    
+    /// <summary>
+    ///     DateTime of creation of the entry
+    /// </summary>
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();
 
     /// <summary>
     ///     List of Epics for this Project

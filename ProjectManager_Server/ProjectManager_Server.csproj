@@ -4,6 +4,10 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
+        <Version>0.0.2.0</Version>
+        <Authors>Flavien Macquignon</Authors>
+        <AssemblyTitle>ProjectManager</AssemblyTitle>
+        <Description>A Jira clone in AspNet</Description>
     </PropertyGroup>
 
     <PropertyGroup>

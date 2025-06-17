@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.GetOneEpic;
 using ProjectManager_Server.Models.UserLand.Entity;
 
 namespace ProjectManager_Server.Models.Data.Entity;
@@ -68,6 +68,12 @@ public class Epic
     /// </summary>
     [ForeignKey("AssignatedId")]
     public User? Assignee { get; set; }
+    
+    /// <summary>
+    ///     DateTime of creation of the entry
+    /// </summary>
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();
 
     /// <summary>
     ///     List of Bugs in the Epic
@@ -86,10 +92,10 @@ public class Epic
     ///     Convert this entity in ViewModel
     /// </summary>
     /// <returns>A representation of this entity</returns>
-    public EpicViewModel ToViewModel()
+    public OneEpicViewModel ToViewModel()
     {
         ArgumentNullException.ThrowIfNull(Description);
-        return new EpicViewModel
+        return new OneEpicViewModel
         {
             Title = Description.Title,
             Content = Description.Content,

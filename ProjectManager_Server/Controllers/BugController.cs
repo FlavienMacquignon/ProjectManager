@@ -12,7 +12,6 @@ namespace ProjectManager_Server.Controllers;
 /// <summary>
 ///     Base Bug controller for primary objects
 /// </summary>
-[ApiController]
 [Route("/Bug")]
 public class BugController : ControllerBase
 {
@@ -36,7 +35,6 @@ public class BugController : ControllerBase
         _logger = logger;
         _bugManager = bugManager;
     }
-
 
     /// <summary>
     ///     Get One Bug for now only display the first Bug in the database, this demonstrate communication with BDD
@@ -66,7 +64,6 @@ public class BugController : ControllerBase
 
         return resp;
     }
-
 
     /// <summary>
     ///     Add a new bug in the database

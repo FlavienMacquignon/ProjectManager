@@ -1,5 +1,5 @@
 using System;
-using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.GetOneEpic;
 
 namespace ProjectManager_Server.Managers.Interfaces;
 
@@ -13,5 +13,5 @@ public interface IEpicManager
     /// </summary>
     /// <param name="id">The id of the Epic to search</param>
     /// <returns>An Epic with it's associated Bugs</returns>
-    public EpicViewModel GetOneById(Guid id);
+    public OneEpicViewModel GetOneById(Guid id);
 }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using ProjectManager_Server.Exceptions;
 using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.Entity;
-using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.GetOneEpic;
 
 namespace ProjectManager_Server.Controllers;
 
@@ -35,7 +35,7 @@ public class EpicController : ControllerBase
     /// <param name="id">id of the Epic to retrieve</param>
     /// <returns>The found Epic, if any</returns>
     [HttpGet(Name = "GetOneEpic")]
-    [ProducesResponseType(typeof(EpicViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OneEpicViewModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public IActionResult Get(Guid id)
     {
