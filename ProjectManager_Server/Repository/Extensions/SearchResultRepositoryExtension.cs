@@ -66,7 +66,8 @@ public static class SearchResultRepositoryExtension
         string query, TimedFilter timedFilter, bool negated)
     {
         var propertyExpression = Expression.Property(Parameter, dateTimeProperty);
-        var constant = Expression.Constant(query.ToUniversalDateTime(), typeof(DateTime?));
+        var queryDt = query.ToUniversalDateTime();
+        var constant = Expression.Constant(queryDt, typeof(DateTime?));
         Expression? comparison;
 
         if ( timedFilter.Before == true )
@@ -79,7 +80,15 @@ public static class SearchResultRepositoryExtension
                 ? Expression.GreaterThanOrEqual(propertyExpression, constant)
                 : Expression.GreaterThan(propertyExpression, constant);
         else
-            comparison = Expression.Equal(propertyExpression, constant);
+        {
+            ArgumentNullException.ThrowIfNull(queryDt);
+            var startOfDay = queryDt.Value.Date;
+            var nextDay = startOfDay.AddDays(1);
+            var greaterThanOrEqual = Expression.GreaterThanOrEqual(propertyExpression, Expression.Constant(startOfDay, typeof(DateTime?)));
+            var lessThan = Expression.LessThan(propertyExpression, Expression.Constant(nextDay, typeof(DateTime?)));
+            comparison = Expression.AndAlso(greaterThanOrEqual, lessThan);
+        }
+
         comparison = comparison.Negate(negated);
         return Expression.Lambda<Func<SearchResultDTO, bool>>(comparison, Parameter);
     }
