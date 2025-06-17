@@ -1,0 +1,4 @@
+﻿<Solution>
+    <Project Path="ProjectManager_Server.Tests\ProjectManager_Server.Tests.csproj" Type="Classic C#"/>
+    <Project Path="ProjectManager_Server\ProjectManager_Server.csproj" Type="Classic C#"/>
+</Solution>

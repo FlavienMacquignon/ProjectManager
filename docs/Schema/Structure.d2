@@ -1,0 +1,420 @@
+title: Project Manager {
+  near: top-center
+  shape: text
+  style: {
+    font-size: 100
+    bold: true
+    underline: true
+  }
+}
+
+grid-columns: 3
+
+style: {
+  font: mono
+  font-size: 29
+}  
+BDD: {
+  shape: cylinder
+  grid-rows:2
+  data: {
+    label: database_schema: data
+    bug: {
+      shape: sql_table
+      id: uuid {constraint: primary_key}
+      description_id : uuid
+      display_id: int
+      created_at: timestamp
+      project_id: uuid {constraint: foreign_key}
+      epic_id: uuid {constraint: foreign_key}
+      reporter_id: uuid {constraint: foreign_key}
+      assigned_id: uuid {constraint: foreign_key}
+      closed_at : timestamp?
+    }
+    bug.reporter -> _.user_land.user.id: 1.1
+    bug.assigned -> _.user_land.user.id: 1.1
+    bug.project_id -> project.id: 1.1
+    bug.epic -> epic.id: 0.0
+
+    epic_bug:     {
+      shape: sql_table
+      id: uuid
+      epic_id: uuid
+      bug_id: uuid
+    }
+    epic_bug.epic_id -> epic.id: 1.1
+    epic_bug.bug_id -> bug.id: 1.1
+
+    epic: {
+      shape: sql_table
+      id: uuid      
+      description_id : uuid
+      reporter_id: uuid {constraint: [foreign_key, unique]}
+      assigned_id: uuid? {constraint: [foreign_key, unique]}
+      project_id: uuid {constraint: [foreign_key; unique]}
+    }
+    epic.reporter_id -> _.user_land.user.id: 1.1
+    epic.assigned_id -> _.user_land.user.id: 1.1
+    epic.project_id -> project.id: 1.1
+
+    project: {
+      shape: sql_table
+      id: uuid
+      description_id : uuid
+      reporter_id: uuid {constraint: [foreign_key, unique]}
+      assigned_id: uuid? {constraint: [foreign_key, unique]}
+      assignated_team_id: uuid? {constraint: [foreign_key, unique]}
+      is_archived: bool
+    }
+    project.reporter_id -> _.user_land.user.id: 1.1
+    project.assigned_id -> _.user_land.user.id: 1.1
+    project.assignated_team_id -> _.user_land.team.id: 1.1
+
+    project_bug: {
+      shape: sql_table
+      id: uuid
+      bug_id: uuid
+      project_id: uuid
+    }
+    project_bug.project_id -> project.id: 1.1   
+    project_bug.bug_id -> bug.id: 1.1
+
+    epic_project: {
+      shape: sql_table
+      id: uuid
+      epic_id: uuid
+      project_id: uuid
+    }
+    epic_project.epic_id -> epic.id: 1.1
+    epic_project.project_id -> project.id: 1.1
+
+    description: {
+      shape: sql_table
+      id: uuid
+      title: varchar(50)
+      content: varchar(500)?
+    }
+    description.id -> epic.description_id :1.1
+    description.id -> bug.description_id :1.1
+    description.id -> project.description_id :1.1
+
+  }
+  user_land: {
+    label: database_schema:user_land
+    user: {
+      shape: sql_table
+      id: uuid {constraint: primary_key}
+      first_name: varchar(25)
+      last_name: varchar(50)
+      email: varchar(254)
+      password: varchar(50)
+      icone: varchar(5000)
+      team_id: uuid
+    }
+
+    user_role: {
+      shape: sql_table
+      id: uuid {constraint: primary_key}
+      user_id: uuid {constraint: foreign_key}
+      role_id: uuid {constraint: foreign_key}
+    }
+    user.id -> user_role.user_id: 1.1
+    roles.id -> user_role.role_id: 1.1
+
+    roles: {
+      shape: sql_table
+      id: uuid {constraint: primary_key}
+      name: varchar(50)
+    }
+
+    user_team: {
+      shape: sql_table
+      id: uuid {constraint: primary_key}
+      user_id: uuid {constraint: foreign_key}
+      team_id: uuid {constraint: foreign_key}
+    }
+    user_team.user_id -> user.id: 1.1
+    user_team.team_id -> team.id: 1.1
+
+    team: {
+      shape: sql_table
+      id: uuid {constraint: primary_key}
+      name: varchar(50)
+      default_role: uuid? {constraint: foreign_key}
+    }
+    team.default_role -> roles.id: 1.1
+  }
+}
+
+BackEnd: {
+  shape: rectangle
+  Controlers: {
+    shape: package
+    BugController: {
+      shape: class
+      config: IConfiguration
+      GetOne(Guid id): IActionResult
+      Add(BugContent bContent): IActionResult
+      Complete(Guid id): IActionResult
+      Assign(Guid userId): IActionResult
+    }
+
+    EpicController: {
+      shape: class
+      config: IConfiguration
+      GetOne(Guid id): IActionResult
+      Add(EpicContent eContent): IActionResult
+      AddBug(Guid bugId): IActionResult
+      Complete(Guid id): IActionResult
+      Assign(Guid userId): IActionResult
+    }
+
+    ProjectController: {
+      shape: class
+      config: IConfiguration
+      GetOne(Guid id): IActionResult
+      Add(ProjectContent eContent): IActionResult
+      AddBug(Guid bugId): IActionResult
+      AddEpic(Guid epicId): IActionResult
+      Archive(Guid projectId): IActionResult
+      AssignTeam( Guid teamId): IActionResult
+    }
+  }
+  Controlers <-> Models
+  Controlers <-> Managers
+  Managers: {
+    shape: package
+    BugManager: {
+      shape: class
+      GetOne (Guid id): Bug
+      Add (BugContent bugContent): Bug
+      CompleteBug (Guid id): bool
+      Assign(Guid userId): Bug
+    }
+
+    EpicManager: {
+      shape: class
+      GetOne(Guid id): Epic
+      Add(EpicContent eContent): Epic
+      AddBug(Guid bugId): Epic
+      Complete(Guid id): bool
+      Assign(Guid userId): Epic
+    }
+
+    ProjectManager: {
+      shape: class
+      GetOne(Guid id): Project
+      AddBug(Guid bugId): Project
+      AddEpic(Guid epicId): Project
+      Archive(Guid projectId): bool
+      AssignTeam (Guid teamId): Project
+    }
+  }
+  Managers <-> Models
+  Repositories <-> Managers
+
+  Repositories: {
+    shape: package
+    BugRepository: {
+      shape: class
+      GetOne(Guid id): Bug
+      Add(BugContent bugContent): Bug
+      CompleteBug(Guid id): bool
+      Assign(Guid userId): bool
+    }
+
+    EpicRepository: {
+      shape: class
+      GetOne(Guid id): Epic
+      Add(EpicContent eContent): Epic
+      AddBug(Guid bugId): Epic
+      Complete(Guid id): bool
+      Assign(Guid userId): Epic
+    }
+
+    ProjectRepository: {
+      shape: class
+      GetOne(Guid id): Project
+      AddBug(Guid bugId): Project
+      AddEpic(Guid epicId): Project
+      Archive(Guid projectId): bool
+      AssignTeam(Guid teamId): Project
+    }
+  }
+  Repositories <-> Models
+
+  Models: {
+    shape: package
+    Bug: {
+      shape: class
+      Id: Guid
+      DisplayId: int
+      Title: string
+      Content: string
+      CreatedAt: DateTime
+      ProjectId: Guid
+      Project: Project
+      EpicId: Guid
+      Epic: Epic
+      # TODO Add User Class and Roles class
+      ReporterId: Guid
+      Reporter: User
+      AssignatedId: Guid
+      Assigned: User
+      IsCompleted: Boolean
+      ToBugContent(this Bug bug): BugContent
+    }
+
+    Epic: {
+      shape: class
+      Id: Guid
+      Title: string
+      Content: string
+      ReporterId: Guid
+      Reporter: User
+      AssignatedId: Guid
+      Assigned: User
+      Bugs: List<Bug>
+      IsCompleted(this Epic epic): Boolean
+    }
+
+    Project: {
+      shape: class
+      Id: Guid
+      Title: string
+      Content: string
+      ReporterId: Guid
+      Reporter: User
+      AssignatedId: Guid
+      Assigned: User
+      AssignatedTeamId: Guid
+      AssignatedTeam: Team
+      Bugs: List<Bug>
+      Epics: List<Epic>
+      IsArchived: Boolean
+    }
+
+    User: {
+      shape: class
+      Id: Guid
+      FirstName: string
+      LastName: string
+      Email: string
+      Icone: string
+      Roles: List<UserRoles>
+      TeamId: Guid
+    }
+
+    UserRoles: {
+      shape: class
+      Id: Guid
+      Name: string
+    }
+
+    Team: {
+      shape: class
+      Id: Guid
+      Name: string
+      DefaultRole: UserRoles
+    }
+  }
+  Models <-> ViewModels
+  ViewModels: {
+    shape: package
+    BugContent: {
+      shape: class
+      Id: Guid
+      Display_id: string
+      Title: string
+      Content: string
+      CreatedAt: string
+      PSummary: ProjectSummary
+      ESummary: EpicSummary
+      Reporter: UserSummary
+      Assignated: UserSummary
+      IsCompleted: Boolean
+    }
+
+    EpicContent: {
+      shape: class
+      Id: Guid
+      Title: string
+      Content: string
+      Reporter: UserSummary
+      Assignated: UserSummary
+      Bugs: List<BugSummary>
+      IsCompleted: Boolean
+    }
+
+    ProjectContent: {
+      shape: class
+      Id: Guid
+      Title: string
+      Content: string
+      Reporter: UserSummary
+      Assignated: UserSummary
+      AssignatedTeam: TeamSummary
+      Bugs: List<BugSummary>
+      Epics: List<EpicSummary>
+    }
+    Summary: {
+      shape: package
+      BugSummary: {
+        shape: class
+        Id: Guid
+        DisplayId: string
+        Name: string
+      }
+
+      ProjectSummary: {
+        shape: class
+        Id: Guid
+        Name: string
+      }
+      EpicSummary: {
+        shape: class
+        Id: Guid
+        Name: string
+      }
+      UserSummary: {
+        shape: class
+        Id: Guid
+        Name: string
+      }
+      TeamSummary: {
+        shape: class
+        Id: Guid
+        Name: string
+      }
+    }
+  }
+  ViewModels <-> Controlers
+
+  Services: {
+    shape: package
+    ProjectManagerContext: {
+      shape: class
+    }
+  }
+  Repositories <-> Services
+  Services <-> Managers
+}
+
+FrontEnd: {
+  shape: page
+}
+BDD <-> Backend: SQL CONNECTION {
+  style: {
+    font-size: 30
+    bold: true
+    underline: true
+  }
+}
+
+BackEnd <-> FrontEnd: HTPP CALLS {
+  style: {
+    font-size: 30
+    bold: true
+    underline: true
+  }
+}
