@@ -48,6 +48,7 @@ public static class Program
             app.UseDeveloperExceptionPage();
         }
 
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         app.UseRouting();
         // app.UseHttpsRedirection();
 

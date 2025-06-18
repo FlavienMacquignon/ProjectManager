@@ -12,6 +12,7 @@ namespace ProjectManager_Server.Controllers;
 /// <summary>
 ///     Epic Controller to manage Epics
 /// </summary>
+[ApiController]
 [Route("/Epic")]
 public class EpicController : ControllerBase
 {

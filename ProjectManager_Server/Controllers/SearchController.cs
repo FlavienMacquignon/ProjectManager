@@ -16,6 +16,7 @@ namespace ProjectManager_Server.Controllers;
 /// <summary>
 ///     Search Controller
 /// </summary>
+[ApiController]
 [Route("/Search")]
 public class SearchController : ControllerBase
 {

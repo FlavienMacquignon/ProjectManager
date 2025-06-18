@@ -21,4 +21,11 @@ public interface IBugRepository
     /// <param name="entityToAdd">The entity to add</param>
     /// <returns>The added bug</returns>
     public Bug Add(Bug entityToAdd);
+
+    /// <summary>
+    ///     Update the provided Bug
+    /// </summary>
+    /// <param name="bugToUpdate">The bug to update</param>
+    /// <returns>The updated bug retrieved from storage</returns>
+    Bug Update(Bug bugToUpdate);
 }

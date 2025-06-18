@@ -6,12 +6,14 @@ using ProjectManager_Server.Exceptions;
 using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.UpBug;
 
 namespace ProjectManager_Server.Controllers;
 
 /// <summary>
 ///     Base Bug controller for primary objects
 /// </summary>
+[ApiController]
 [Route("/Bug")]
 public class BugController : ControllerBase
 {
@@ -72,7 +74,7 @@ public class BugController : ControllerBase
     /// <returns>An HTPP 200 containing a Bug object</returns>
     [HttpPost(Name = "Insert")]
     [ProducesResponseType(typeof(DescriptionContentViewModel), 200, "application/json")]
-    public IActionResult Add(DescriptionContentViewModel entityToAdd)
+    public IActionResult Add([FromBody] DescriptionContentViewModel entityToAdd)
     {
         IActionResult resp;
         try
@@ -89,6 +91,32 @@ public class BugController : ControllerBase
             };
         }
 
+        return resp;
+    }
+
+    /// <summary>
+    /// TODO DOC
+    /// </summary>
+    /// <param name="entityToUpdate"></param>
+    /// <returns></returns>
+    [HttpPut("Update")]
+    public IActionResult Update([FromBody] UpBugViewModel entityToUpdate)
+    {
+        IActionResult resp;
+        try
+        {
+            resp = Ok(_bugManager.Update(entityToUpdate));
+        }
+        catch (Exception e)
+        {
+            var errorMessage = e.Message;
+            _logger.LogError("{Message}", errorMessage);
+            _logger.LogDebug("{Stack}", e.StackTrace);
+            resp = e switch
+            {
+                _ => StatusCode(500, errorMessage)
+            };
+        }
         return resp;
     }
 }
