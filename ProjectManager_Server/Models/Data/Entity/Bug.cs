@@ -1,7 +1,9 @@
+using ProjectManager_Server.Helpers;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.UpBug;
 using ProjectManager_Server.Models.UserLand.Entity;
 
 namespace ProjectManager_Server.Models.Data.Entity;
@@ -142,5 +144,48 @@ public class Bug
             ProjectId = ProjectId,
             ReporterId = ReporterId
         };
+    }
+
+    /// <summary>
+    ///     Update the current entity
+    /// </summary>
+    /// <param name="updatedData">The object containing the updated datas</param>
+    /// <exception cref="InvalidOperationException">If the provided updated datas are not for this object</exception>
+    public void Update(UpBugViewModel updatedData)
+    {
+        if ( Id != updatedData.Id )
+            throw new InvalidOperationException("Trying to update the wrong object");
+        ArgumentNullException.ThrowIfNull(Description);
+        Description.Title = updatedData.Description?.Title ?? Description.Title;
+        Description.Content = updatedData.Description?.Content ?? Description.Content;
+        EpicId = updatedData.EpicId ?? EpicId;
+        AssignatedId = updatedData.AssignatedId ?? AssignatedId;
+        //TODO User defined DateFormat system wide
+        ClosedAt = updatedData.ClosedAt.ToUniversalDateTimeNullable("yyyy/MM/dd HH:mm:ss") ?? ClosedAt;
+    }
+
+    /// <summary>
+    ///     Convert the current object into updated data view
+    /// </summary>
+    /// <returns>A UpBugViewModel</returns>
+    public UpBugViewModel ToUpBugVm()
+    {
+        string? closedAt = null;
+        if ( ClosedAt.HasValue )
+            //TODO User defined DateFormat system wide
+            closedAt = ClosedAt.Value.ToString("yyyy/MM/dd HH:mm:ss");
+        ArgumentNullException.ThrowIfNull(Description);
+        return new UpBugViewModel(Id,
+            new UpDescriptionContentViewModel
+                {
+                    Title = Description.Title,
+                    Content = Description.Content,
+                    ProjectId = ProjectId,
+                    ReporterId = ReporterId
+                },
+            EpicId,
+            AssignatedId,
+            closedAt
+            );
     }
 }

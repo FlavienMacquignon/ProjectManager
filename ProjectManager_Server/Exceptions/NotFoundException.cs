@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ProjectManager_Server.Exceptions;
 
@@ -23,7 +24,7 @@ public class NotFoundException<T> : Exception where T : class
     /// </summary>
     /// <param name="entity">The entity to check nullability for</param>
     /// <param name="customMessage">Override default message if provided</param>
-    public static void ThrowIfNull(T? entity, string? customMessage = null)
+    public static void ThrowIfNull([NotNull] T? entity, string? customMessage = null)
     {
         if ( entity != null ) return;
         customMessage ??= typeof(T).Name + " was not found.";
@@ -35,7 +36,7 @@ public class NotFoundException<T> : Exception where T : class
     /// </summary>
     /// <param name="entity">The entity to check nullability for</param>
     /// <param name="customMessage">Override default message if provided</param>
-    public static void ThrowIfNullOrEmpty(T? entity, string? customMessage = null)
+    public static void ThrowIfNullOrEmpty([NotNull] T? entity, string? customMessage = null)
     {
         if ( entity != null && typeof(IList).IsAssignableFrom(typeof(T)) && ( ( IList )entity ).Count != 0 ) return;
         customMessage ??= typeof(T).Name + " was not found.";

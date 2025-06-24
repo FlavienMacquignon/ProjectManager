@@ -1,5 +1,6 @@
 using System;
 using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.UpBug;
 
 namespace ProjectManager_Server.Managers.Interfaces;
 
@@ -21,4 +22,11 @@ public interface IBugManager
     /// <param name="entityToAdd">the entity to add</param>
     /// <returns>The added entity</returns>
     public DescriptionContentViewModel Add(DescriptionContentViewModel entityToAdd);
+
+    /// <summary>
+    ///     Update one bug information
+    /// </summary>
+    /// <param name="entityToUpdate">The bug to update</param>
+    /// <returns>The updated bug</returns>
+    public UpBugViewModel Update(UpBugViewModel entityToUpdate);
 }
