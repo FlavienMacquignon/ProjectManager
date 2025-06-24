@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager_Server.Models.Data.Entity;
+using ProjectManager_Server.Repository.Abstract;
 using ProjectManager_Server.Repository.Interfaces;
 using ProjectManager_Server.Services;
 
@@ -10,48 +11,33 @@ namespace ProjectManager_Server.Repository;
 /// <summary>
 ///     Bug Repository
 /// </summary>
-public class BugRepository : IBugRepository
+public class BugRepository : AbstractRepository, IBugRepository
 {
     /// <summary>
-    ///     ctor
+    ///     ctor call base one
     /// </summary>
-    public BugRepository(IDbContextFactory<ProjectManagerContext> contextFactory)
-    {
-        ContextFactory = contextFactory;
-        Db = ContextFactory.CreateDbContext();
-    }
-
-    /// <summary>
-    ///     The constructed DB Context
-    /// </summary>
-    private ProjectManagerContext Db { get; set; }
-
-    /// <summary>
-    ///     The DB Context Factory
-    /// </summary>
-    private IDbContextFactory<ProjectManagerContext> ContextFactory { get; }
+    public BugRepository(IDbContextFactory<ProjectManagerContext> contextFactory) : base(contextFactory.CreateDbContext())
+    { }
 
     /// <inheritdoc />
     public Bug? GetOne(Guid id)
     {
-        return Db.Bugs.Include("Description").FirstOrDefault(bug => bug.Id == id);
+        return ((ProjectManagerContext)Db).Bugs.Include("Description").SingleOrDefault(bug => bug.Id == id);
     }
 
     /// <inheritdoc />
     public Bug Add(Bug entityToAdd)
     {
         Db.Add(entityToAdd);
-        var errorCode = Db.SaveChanges();
-        // TODO Throw CustomException ??
-        if (errorCode == 0) throw new Exception("Database issue");
+        SaveChanges();
         return entityToAdd;
     }
 
-    /// <summary>
-    ///     unassign Db Context for sanity
-    /// </summary>
-    ~BugRepository()
+    /// <inheritdoc />
+    public Bug Update(Bug bugToUpdate)
     {
-        Db = null!;
+        Db.Update(bugToUpdate);
+        SaveChanges();
+        return bugToUpdate;
     }
 }

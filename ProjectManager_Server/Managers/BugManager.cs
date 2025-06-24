@@ -3,6 +3,7 @@ using ProjectManager_Server.Exceptions;
 using ProjectManager_Server.Managers.Interfaces;
 using ProjectManager_Server.Models.Data.Entity;
 using ProjectManager_Server.Models.Data.ViewModels;
+using ProjectManager_Server.Models.Data.ViewModels.UpBug;
 using ProjectManager_Server.Repository.Interfaces;
 
 namespace ProjectManager_Server.Managers;
@@ -31,7 +32,7 @@ public class BugManager : IBugManager
     {
         var bug = _repo.GetOne(id);
         NotFoundException<Bug>.ThrowIfNull(bug);
-        return bug!.ToDescriptionContentViewModel();
+        return bug.ToDescriptionContentViewModel();
     }
 
     /// <inheritdoc />
@@ -40,5 +41,15 @@ public class BugManager : IBugManager
         var bug = new Bug(entityToAdd);
         var storedBug = _repo.Add(bug);
         return storedBug.ToDescriptionContentViewModel();
+    }
+
+    /// <inheritdoc />
+    public UpBugViewModel Update(UpBugViewModel entityToUpdate)
+    {
+        var bugFound = _repo.GetOne(entityToUpdate.Id);
+        NotFoundException<Bug>.ThrowIfNull(bugFound);
+        bugFound.Update(entityToUpdate);
+        var upBug = _repo.Update(bugFound);
+        return upBug.ToUpBugVm();
     }
 }

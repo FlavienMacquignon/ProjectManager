@@ -27,7 +27,7 @@ public class SearchManager : ISearchManager
     public List<Responses> Search(FilterObject rules)
     {
         var responses = _repository.Search(rules);
-        NotFoundException<List<Responses>>.ThrowIfNullOrEmpty(responses);
+        NotFoundException<List<Responses>>.ThrowIfNullOrEmpty(responses, "List of Responses was not found");
         return responses;
     }
 }
