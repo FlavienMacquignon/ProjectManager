@@ -24,9 +24,9 @@ public interface IBugManager
     public DescriptionContentViewModel Add(DescriptionContentViewModel entityToAdd);
 
     /// <summary>
-    /// TODO DOC
+    ///     Update one bug information
     /// </summary>
-    /// <param name="entityToUpdate"></param>
-    /// <returns></returns>
+    /// <param name="entityToUpdate">The bug to update</param>
+    /// <returns>The updated bug</returns>
     public UpBugViewModel Update(UpBugViewModel entityToUpdate);
 }

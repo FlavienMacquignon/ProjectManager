@@ -95,10 +95,10 @@ public class BugController : ControllerBase
     }
 
     /// <summary>
-    /// TODO DOC
+    ///     Update a Bug
     /// </summary>
-    /// <param name="entityToUpdate"></param>
-    /// <returns></returns>
+    /// <param name="entityToUpdate">The bug to update</param>
+    /// <returns>The updated bug</returns>
     [HttpPut("Update")]
     public IActionResult Update([FromBody] UpBugViewModel entityToUpdate)
     {
